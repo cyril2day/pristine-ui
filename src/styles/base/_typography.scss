@@ -1,5 +1,5 @@
 :root {
-  --font-family-base: 'SF Pro';
+  --font-family-base: -apple-system, system-ui, BlinkMacSystemFont, "SF Pro", sans-serif;
   --font-size-base: 16px;
 
   --font-weight-regular: 400;
@@ -12,36 +12,6 @@
   --text-footnote: 0.625rem;
   --text-caption-1: 0.625rem;
   --text-caption-2: 0.625rem;
-}
-
-@font-face {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-regular);
-  src: url('../fonts/SF-Pro-Text-Regular.otf');
-}
-
-@font-face {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-medium);
-  src: url('../fonts/SF-Pro-Text-Medium.otf');
-}
-
-@font-face {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-semibold);
-  src: url('../fonts/SF-Pro-Text-Semibold.otf');
-}
-
-@font-face {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-bold);
-  src: url('../fonts/SF-Pro-Text-Bold.otf');
-}
-
-@font-face {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-heavy);
-  src: url('../fonts/SF-Pro-Text-Heavy.otf');
 }
 
 // Typography presets (matching Apple's Human Interface Guidelines)
