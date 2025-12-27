@@ -1,0 +1,94 @@
+:root {
+  --font-family-base: 'SF Pro';
+  --font-size-base: 16px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-heavy: 900;
+
+  --text-subheadline: 0.6875rem;
+  --text-footnote: 0.625rem;
+  --text-caption-1: 0.625rem;
+  --text-caption-2: 0.625rem;
+}
+
+@font-face {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-regular);
+  src: url('../fonts/SF-Pro-Text-Regular.otf');
+}
+
+@font-face {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-medium);
+  src: url('../fonts/SF-Pro-Text-Medium.otf');
+}
+
+@font-face {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-semibold);
+  src: url('../fonts/SF-Pro-Text-Semibold.otf');
+}
+
+@font-face {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-bold);
+  src: url('../fonts/SF-Pro-Text-Bold.otf');
+}
+
+@font-face {
+  font-family: var(--font-family-base);
+  font-weight: var(--font-weight-heavy);
+  src: url('../fonts/SF-Pro-Text-Heavy.otf');
+}
+
+// Typography presets (matching Apple's Human Interface Guidelines)
+.text-large-title {
+  font-size: 1.625rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 2;
+}
+
+.text-title-1 {
+  font-size: 1.375rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.625;
+}
+
+.text-title-2 {
+  font-size: 1.0625rem;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.375;
+}
+
+.text-title-3 {
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.25;
+}
+
+.text-headline {
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-heavy);
+  line-height: 1;
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  font-weight: var(--font-weight-regular);
+  line-height: 1;
+}
+
+.text-callout {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-regular);
+  line-height: 0.9375;
+}
+
+.text-footnote {
+  font-size: 0.625rem;
+  font-weight: var(--font-weight-regular);
+  line-height: 0.8125;
+}
