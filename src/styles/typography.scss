@@ -1,38 +1,18 @@
 /* PristineUI Typography Tokens */
+/* Raw typography tokens are defined in tokens-raw.scss. */
+/* This file retains font families and letter spacing. */
+
 :root {
-  /* Font families */
+  /* Font families (also defined in tokens-raw.scss) */
   --pr-font-family-base: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro", "SF Pro Text", "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --pr-font-family-mono: ui-monospace, "SF Mono", Monaco, Menlo, "Cascadia Code", "Source Code Pro", Consolas, monospace;
   --pr-font-family-serif: Georgia, "New York", Times, "Times New Roman", serif;
 
-  /* Font sizes (relative to 16px base) */
-  --pr-font-size-xs: 0.75rem;   /* 12px */
-  --pr-font-size-sm: 0.875rem;  /* 14px */
-  --pr-font-size-base: 1rem;    /* 16px */
-  --pr-font-size-md: 1.125rem;  /* 18px */
-  --pr-font-size-lg: 1.25rem;   /* 20px */
-  --pr-font-size-xl: 1.5rem;    /* 24px */
-  --pr-font-size-2xl: 1.875rem; /* 30px */
-  --pr-font-size-3xl: 2.25rem;  /* 36px */
-  --pr-font-size-4xl: 3rem;     /* 48px */
-
-  /* Font weights */
-  --pr-font-weight-regular: 400;
-  --pr-font-weight-medium: 500;
-  --pr-font-weight-semibold: 600;
-  --pr-font-weight-bold: 700;
-  --pr-font-weight-heavy: 900;
-
-  /* Line heights */
-  --pr-line-height-tight: 1.2;
-  --pr-line-height-normal: 1.5;
-  --pr-line-height-relaxed: 1.75;
-  --pr-line-height-loose: 2;
-
-  /* Letter spacing */
+  /* Letter spacing (generic) */
   --pr-letter-spacing-tighter: -0.05em;
   --pr-letter-spacing-tight: -0.025em;
   --pr-letter-spacing-normal: 0;
   --pr-letter-spacing-wide: 0.025em;
   --pr-letter-spacing-wider: 0.05em;
 }
+

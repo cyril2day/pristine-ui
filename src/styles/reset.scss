@@ -18,9 +18,9 @@ html {
 }
 
 body {
-  font-size: var(--pr-font-size-base);
+  font-size: var(--pr-font-body-size);
   font-family: var(--pr-font-family-base);
-  line-height: var(--pr-line-height-normal);
+  line-height: var(--pr-font-body-line-height);
   color: var(--pr-color-text);
   background-color: var(--pr-color-background);
 }
