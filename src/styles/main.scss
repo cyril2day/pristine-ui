@@ -1,3 +1,5 @@
-@use 'base/typography';
-@use 'base/reset';
-@use 'color';
+/* PristineUI Main Styles Entry */
+@use 'tokens-raw';
+@use 'tokens-semantic';
+@use 'typography';
+@use 'reset';
