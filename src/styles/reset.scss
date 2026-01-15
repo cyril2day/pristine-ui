@@ -21,8 +21,8 @@ body {
   font-size: var(--pr-font-body-size);
   font-family: var(--pr-font-family-base);
   line-height: var(--pr-font-body-line-height);
-  color: var(--pr-color-text);
-  background-color: var(--pr-color-background);
+  color: var(--pr-color-text-primary);
+  background: var(--pr-color-background);
 }
 
 /* Remove default margin */
@@ -57,6 +57,12 @@ html:focus-within {
 /* A elements that don't have a class get default styles */
 a:not([class]) {
   text-decoration-skip-ink: auto;
+  color: var(--pr-color-system-cyan);
+}
+
+/* A elements should not have underlines */
+a {
+  text-decoration: none;
 }
 
 /* Make images easier to work with */

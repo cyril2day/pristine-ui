@@ -1,0 +1,169 @@
+/* PristineUI Raw Design Tokens */
+/* Colors - Raw HSL values */
+:root {
+  /* System Colors */
+  --pr-color-system-red: hsl(359, 100%, 61%);
+  --pr-color-system-orange: hsl(28, 100%, 58%);
+  --pr-color-system-yellow: hsl(48, 100%, 50%);
+  --pr-color-system-green: hsl(135, 59%, 49%);
+  --pr-color-system-mint: hsl(174, 100%, 39%);
+  --pr-color-system-teal: hsl(184, 100%, 41%);
+  --pr-color-system-cyan: hsl(199, 78%, 55%);
+  --pr-color-system-blue: hsl(208, 100%, 50%);
+  --pr-color-system-indigo: hsl(245, 89%, 65%);
+  --pr-color-system-purple: hsl(293, 74%, 53%);
+  --pr-color-system-pink: hsl(349, 100%, 59%);
+  --pr-color-system-brown: hsl(25, 32%, 52%);
+  --pr-color-system-white: hsl(0, 0%, 100%);
+  --pr-color-system-black: hsl(0, 0%, 0%);
+  --pr-color-system-gray: hsl(240, 2%, 57%);
+
+  /* Text Colors */
+  --pr-color-text: var(--pr-color-text-primary); /* alias */
+  --pr-color-text-primary: hsla(0, 0%, 0%, 0.85);
+  --pr-color-text-secondary: hsla(0, 0%, 0%, 0.5);
+  --pr-color-text-tertiary: hsla(0, 0%, 0%, 0.25);
+
+  /* Fill Colors */
+  --pr-color-fill-primary: hsla(0, 0%, 0%, 0.10);
+  --pr-color-fill-secondary: hsla(0, 0%, 0%, 0.08);
+  --pr-color-fill-tertiary: hsla(0, 0%, 0%, 0.05);
+
+  /* Background Colors */
+  --pr-color-background: hsl(0, 0%, 98%);
+
+  /* Material Colors */
+  --pr-color-material-ultrathick: hsla(0, 0%, 96%, 0.84);
+  --pr-color-material-thick: hsla(0, 0%, 96%, 0.72);
+  --pr-color-material-medium: hsla(0, 0%, 96%, 0.6);
+  --pr-color-material-thin: hsla(0, 0%, 96%, 0.48);
+  --pr-color-material-ultrathin: hsla(0, 0%, 96%, 0.36);
+
+  /* Surface Colors */
+  --pr-color-surface-selected: var(--pr-color-background);
+}
+
+/* Dark theme overrides */
+.dark {
+  /* System Colors */
+  --pr-color-system-red: hsl(359, 100%, 63%);
+  --pr-color-system-orange: hsl(28, 100%, 59%);
+  --pr-color-system-yellow: hsl(50, 100%, 50%);
+  --pr-color-system-green: hsl(135, 64%, 50%);
+  --pr-color-system-mint: hsl(174, 100%, 43%);
+  --pr-color-system-teal: hsl(184, 100%, 44%);
+  --pr-color-system-cyan: hsl(197, 100%, 70%);
+  --pr-color-system-blue: hsl(206, 100%, 50%);
+  --pr-color-system-indigo: hsl(234, 100%, 71%);
+  --pr-color-system-purple: hsl(293, 88%, 58%);
+  --pr-color-system-pink: hsl(348, 100%, 61%);
+  --pr-color-system-brown: hsl(27, 36%, 56%);
+  --pr-color-system-gray: hsl(240, 2%, 61%);
+
+  /* Label Colors */
+  --pr-color-text: var(--pr-color-text-primary);
+  --pr-color-text-primary: hsla(0, 0%, 100%, 0.85);
+  --pr-color-text-secondary: hsla(0, 0%, 100%, 0.55);
+  --pr-color-text-tertiary: hsla(0, 0%, 100%, 0.25);
+
+  /* Fill Colors */
+  --pr-color-fill-primary: hsla(0, 0%, 100%, 0.10);
+  --pr-color-fill-secondary: hsla(0, 0%, 100%, 0.08);
+  --pr-color-fill-tertiary: hsla(0, 0%, 100%, 0.05);
+
+  /* Background Colors */
+  --pr-color-background: hsl(0, 0%, 12%);
+
+  /* Material Colors */
+  --pr-color-material-ultrathick: hsla(0, 0%, 0%, 0.50);
+  --pr-color-material-thick: hsla(0, 0%, 0%, 0.40);
+  --pr-color-material-medium: hsla(0, 0%, 0%, 0.29);
+  --pr-color-material-thin: hsla(0, 0%, 0%, 0.20);
+  --pr-color-material-ultrathin: hsla(0, 0%, 0%, 0.10);
+
+  /* Surface Colors */
+  --pr-color-surface-selected: var(--pr-color-fill-primary);
+}
+
+
+/* Breakpoints for responsive design */
+:root {
+  --breakpoint-mobile: 440px;   /* Max width for mobile (iPhone) */
+  --breakpoint-tablet: 1024px;  /* Max width for tablet (iPad) */
+  --breakpoint-desktop: 1440px; /* Min width for desktop (14"+) */
+}
+
+/* Generic Sizing Tokens */
+
+/* Height Scale */
+:root {
+  --pr-size-height-mini: 28px;
+  --pr-size-height-small: 32px;
+  --pr-size-height-regular: 44px;
+  --pr-size-height-large: 52px;
+  --pr-size-height-extra-large: 64px;
+}
+
+/* Minimum Dimensions */
+:root {
+  --pr-size-min-width: 44px;
+}
+
+/* Padding Scale */
+:root {
+  --pr-size-padding-horizontal: 12px;
+  --pr-size-padding-vertical: 8px;
+}
+
+/* Control Size Scale (checkbox, radio, switch thumb) */
+:root {
+  --pr-size-control-mini: 16px;
+  --pr-size-control-small: 18px;
+  --pr-size-control-regular: 20px;
+  --pr-size-control-large: 24px;
+  --pr-size-control-extra-large: 28px;
+}
+
+/* Switch Track Dimensions */
+:root {
+  --pr-size-track-width-mini: 36px;
+  --pr-size-track-width-small: 40px;
+  --pr-size-track-width-regular: 52px;
+  --pr-size-track-width-large: 60px;
+  --pr-size-track-width-extra-large: 72px;
+
+  --pr-size-track-height-mini: 20px;
+  --pr-size-track-height-small: 24px;
+  --pr-size-track-height-regular: 32px;
+  --pr-size-track-height-large: 36px;
+  --pr-size-track-height-extra-large: 40px;
+
+  --pr-size-thumb-size-mini: 16px;
+  --pr-size-thumb-size-small: 18px;
+  --pr-size-thumb-size-regular: 24px;
+  --pr-size-thumb-size-large: 28px;
+  --pr-size-thumb-size-extra-large: 32px;
+
+  --pr-size-thumb-offset: 2px;
+}
+
+/* Border Radius Scale */
+:root {
+  --pr-size-border-radius-rounded-rectangle: 8px;
+  --pr-size-border-radius-capsule: 9999px;
+  --pr-size-border-radius-circular: 50%;
+}
+
+/* Spacing Scale */
+:root {
+  --pr-size-spacing-extra-tight: 2px;
+  --pr-size-spacing-tight: 4px;
+  --pr-size-spacing-base: 8px;
+  --pr-size-spacing-medium: 16px;
+}
+
+/* Opacity Tokens */
+:root {
+  --pr-opacity-disabled: 0.5;
+  --pr-opacity-disabled-strong: 0.7;
+}

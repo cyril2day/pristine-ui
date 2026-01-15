@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: process.env.BASE_URL || '/',
   plugins: [
     vue(),
     vueDevTools(),

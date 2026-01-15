@@ -1,12 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import ComponentDemoPage from '@/views/demo/ComponentDemoPage.vue'
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-  <button>Sample Button</button>
+  <ComponentDemoPage />
 </template>
 
-<style scoped></style>
+<style lang="scss">
+/* Global styles are imported via main.scss */
+</style>

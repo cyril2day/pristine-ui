@@ -1,9 +1,7 @@
 /* PristineUI Typography Tokens */
-/* Raw typography tokens are defined in tokens-raw.scss. */
-/* This file retains font families and letter spacing. */
 
 :root {
-  /* Font families (also defined in tokens-raw.scss) */
+  /* Font families */
   --pr-font-family-base: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro", "SF Pro Text", "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --pr-font-family-mono: ui-monospace, "SF Mono", Monaco, Menlo, "Cascadia Code", "Source Code Pro", Consolas, monospace;
   --pr-font-family-serif: Georgia, "New York", Times, "Times New Roman", serif;
@@ -14,5 +12,67 @@
   --pr-letter-spacing-normal: 0;
   --pr-letter-spacing-wide: 0.025em;
   --pr-letter-spacing-wider: 0.05em;
+
+  /* Text styles */
+  --pr-font-large-title-size: 31px;
+  --pr-font-large-title-weight: 400;
+  --pr-font-large-title-line-height: 1.226
+
+  --pr-font-title-1-size: 25px;
+  --pr-font-title-1-weight: 400;
+  --pr-font-title-1-line-height: 1.24;
+
+  --pr-font-title-2-size: 19px;
+  --pr-font-title-2-weight: 400;
+  --pr-font-title-2-line-height: 1.263;
+
+  --pr-font-title-3-size: 17px;
+  --pr-font-title-3-weight: 400;
+  --pr-font-title-3-line-height: 1.294;
+
+  --pr-font-headline-size: 14px;
+  --pr-font-headline-weight: 600;
+  --pr-font-headline-line-height: 1.357;
+
+  --pr-font-body-size: 14px;
+  --pr-font-body-weight: 400;
+  --pr-font-body-weight-bold: var(--pr-font-headline-weight);
+  --pr-font-body-line-height: 1.357;
+
+  --pr-font-callout-size: 13px;
+  --pr-font-callout-weight: 400;
+  --pr-font-callout-line-height: 1.385;
+
+  --pr-font-subhead-size: 12px;
+  --pr-font-subhead-weight: 400;
+  --pr-font-subhead-line-height: 1.333;
+
+  --pr-font-footnote-size: 12px;
+  --pr-font-footnote-weight: 400;
+  --pr-font-footnote-line-height: 1.333;
+
+  --pr-font-caption-1-size: 11px;
+  --pr-font-caption-1-weight: 400;
+  --pr-font-caption-1-line-height: 1.182;
+
+  --pr-font-caption-2-size: 11px;
+  --pr-font-caption-2-weight: 400;
+  --pr-font-caption-2-line-height: 1.182;
 }
 
+/* Desktop typography overrides (min-width: 1025px) */
+@media (min-width: 1025px) {
+  :root {
+    --pr-font-large-title-size: 39px;
+    --pr-font-title-1-size: 31px;
+    --pr-font-title-2-size: 24px;
+    --pr-font-title-3-size: 21px;
+    --pr-font-headline-size: 18px;
+    --pr-font-body-size: 18px;
+    --pr-font-callout-size: 16px;
+    --pr-font-subhead-size: 15px;
+    --pr-font-footnote-size: 15px;
+    --pr-font-caption-1-size: 14px;
+    --pr-font-caption-2-size: 14px;
+  }
+}
