@@ -185,28 +185,22 @@ function selectComponent(id: ComponentId) {
 </template>
 
 <style lang="scss" scoped>
-:global(html),
-:global(body) {
-  margin: 0;
-  overflow: hidden;
-}
-
 .component-demo-page {
   display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .sidebar {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
   width: 240px;
   flex-shrink: 0;
   background: var(--pr-color-material-thick);
   border-right: 1px solid var(--pr-color-fill-tertiary);
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
   overflow: hidden;
+  height: 100%;
+  position: fixed;
 }
 
 .sidebar-header {
@@ -276,7 +270,7 @@ function selectComponent(id: ComponentId) {
 }
 
 .sidebar-section {
-  margin-bottom: 2rem;
+  margin-top: auto;
 }
 
 
@@ -297,12 +291,13 @@ function selectComponent(id: ComponentId) {
 }
 
 .main-content {
+  display: flex;
   flex: 1;
   padding: 2rem;
-  overflow-y: auto;
-  display: flex;
+  overflow: auto;
   flex-direction: column;
   gap: 2rem;
+  margin-left: 240px;
 }
 
 .content-header {
