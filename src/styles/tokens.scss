@@ -30,7 +30,8 @@
   --pr-color-fill-tertiary: hsla(0, 0%, 0%, 0.05);
 
   /* Background Colors */
-  --pr-color-background: hsl(0, 0%, 98%);
+  --pr-color-background: hsl(0, 0%, 100%);
+  --pr-color-sidebar-background: hsla(240, 25%, 98%, 0.8);
 
   /* Material Colors */
   --pr-color-material-ultrathick: hsla(0, 0%, 96%, 0.84);
@@ -72,7 +73,8 @@
   --pr-color-fill-tertiary: hsla(0, 0%, 100%, 0.05);
 
   /* Background Colors */
-  --pr-color-background: hsl(0, 0%, 12%);
+  --pr-color-background: hsl(240, 2%, 9%);
+  --pr-color-sidebar-background: hsla(240, 3%, 12%, 0.8);
 
   /* Material Colors */
   --pr-color-material-ultrathick: hsla(0, 0%, 0%, 0.50);

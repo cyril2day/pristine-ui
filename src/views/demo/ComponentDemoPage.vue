@@ -191,12 +191,13 @@ function selectComponent(id: ComponentId) {
 }
 
 .sidebar {
+  background: var(--pr-color-sidebar-background);
+  backdrop-filter: saturate(180%) blur(20px);
   display: flex;
   flex: 0 0 auto;
   flex-direction: column;
   width: 240px;
   flex-shrink: 0;
-  background: var(--pr-color-material-thick);
   border-right: 1px solid var(--pr-color-fill-tertiary);
   overflow: hidden;
   height: 100%;
@@ -388,7 +389,6 @@ function selectComponent(id: ComponentId) {
     left: 0;
     width: 240px;
     height: 100vh;
-    background: var(--pr-color-background);
     border-right: 1px solid var(--pr-color-fill-tertiary);
     z-index: 1000;
     transform: translateX(-100%);
@@ -410,6 +410,10 @@ function selectComponent(id: ComponentId) {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  .sidebar-overlay {
+    background: transparent;
   }
 
   .theme-toggle-section {
