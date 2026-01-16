@@ -369,6 +369,10 @@ function selectComponent(id: ComponentId) {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+
   .sidebar-toggle {
     display: flex;
     margin-bottom: 1rem;
