@@ -108,7 +108,7 @@ const {
   line-height: var(--pr-font-body-line-height);
   color: var(--pr-color-text-primary);
   background-color: var(--pr-color-material-ultrathin);
-  border: 1px solid var(--pr-color-fill-secondary);
+  border: 2px solid var(--pr-color-fill-secondary);
   border-radius: var(--pr-size-border-radius-rounded-rectangle);
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
