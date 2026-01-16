@@ -9,6 +9,7 @@ import DemoRadioButton from './components/DemoRadioButton.vue'
 import DemoSwitchToggle from './components/DemoSwitchToggle.vue'
 import DemoSegmentedControl from './components/DemoSegmentedControl.vue'
 import DemoTabView from './components/DemoTabView.vue'
+import DemoComboBox from './components/DemoComboBox.vue'
 
 const { isDark, toggleTheme } = useTheme()
 
@@ -42,7 +43,7 @@ function toggleSidebar() {
 }
 
 // Component selection
-type ComponentId = 'push-button' | 'text-field' | 'checkbox' | 'radio-button' | 'switch-toggle' | 'segmented-control' | 'tab-view'
+type ComponentId = 'push-button' | 'text-field' | 'checkbox' | 'radio-button' | 'switch-toggle' | 'segmented-control' | 'tab-view' | 'combo-box'
 type ComponentCategory = {
   id: string
   title: string
@@ -60,6 +61,7 @@ const categories: ComponentCategory[] = [
       { id: 'radio-button', label: 'RadioButton' },
       { id: 'switch-toggle', label: 'SwitchToggle' },
       { id: 'segmented-control', label: 'SegmentedControl' },
+      { id: 'combo-box', label: 'ComboBox' },
     ]
   },
   {
@@ -146,6 +148,7 @@ function selectComponent(id: ComponentId) {
           : selectedComponent === 'radio-button' ? 'RadioButton'
           : selectedComponent === 'switch-toggle' ? 'SwitchToggle'
           : selectedComponent === 'segmented-control' ? 'SegmentedControl'
+          : selectedComponent === 'combo-box' ? 'ComboBox'
           : 'TabView'
         }}</h1>
         <p class="component-description">
@@ -162,6 +165,8 @@ function selectComponent(id: ComponentId) {
             ? 'A toggle switch component with on/off labels, sizes, and variants.'
             : selectedComponent === 'segmented-control'
             ? 'A segmented control component for selecting one option from a set, with size variants.'
+            : selectedComponent === 'combo-box'
+            ? 'A combo box component that combines a text input with a dropdown list of selectable items, supporting filtering, loading states, and Apple HIG styling.'
             : 'A tab view component combining segmented control and tab panels, following Apple HIG and WAI‑ARIA patterns.'
           }}
         </p>
@@ -176,6 +181,7 @@ function selectComponent(id: ComponentId) {
             : selectedComponent === 'radio-button' ? DemoRadioButton
             : selectedComponent === 'switch-toggle' ? DemoSwitchToggle
             : selectedComponent === 'segmented-control' ? DemoSegmentedControl
+            : selectedComponent === 'combo-box' ? DemoComboBox
             : DemoTabView
           "
         />
