@@ -1,18 +1,21 @@
 # PristineUI
 
-An Apple-inspired Vue.js component library that harmonizes the elegance of Apple’s Human Interface Guidelines with the inclusivity of WAI-ARIA design patterns. Delivers clean, intuitive, and accessible UI components.
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/demo-live-green.svg)](https://pristine.cylonsido.dev)
+
+An Apple-inspired Vue.js component library that harmonizes the elegance of Apple’s Human Interface Guidelines with the inclusivity of WAI‑ARIA design patterns. Delivers clean, intuitive, and accessible UI components.
 
 ## Features
 
 - **Apple HIG Inspired** – Familiar, clean, and elegant design language.
-- **Accessibility First** – Built with WAI-ARIA patterns and semantic HTML.
+- **Accessibility First** – Built with WAI‑ARIA patterns and semantic HTML.
 - **TypeScript Support** – Full type safety and IntelliSense.
 - **Sass/SCSS Styling** – Modular, customizable styles with design tokens.
-- **BEM Naming** – Consistent and predictable CSS class names.
-- **Responsive Design** – Works across mobile, tablet, and desktop breakpoints.
+- **Responsive Design** – Works across mobile, tablet, and desktop.
 - **Light/Dark Mode** – Automatic theme detection with custom CSS variables.
 - **Vitest Unit Testing** – Reliable, fast tests for every component.
 - **ESLint Configuration** – Code quality and consistency.
+- **Functional Programming** – Emphasis on pure functions, immutability, and composability.
 
 ## Installation
 
@@ -31,31 +34,42 @@ yarn add pristine-ui
 
 ```vue
 <script setup lang="ts">
-import { BaseButton } from 'pristine-ui'
+import { PushButton } from 'pristine-ui'
 </script>
 
 <template>
-  <BaseButton variant="primary" size="medium">
+  <PushButton variant="primary" size="medium">
     Click Me
-  </BaseButton>
+  </PushButton>
 </template>
 ```
+
+### Available Components
+
+- **PushButton** – Buttons with various roles, sizes, and shapes.
+- **TextField** – Text input with states, sizes, and variants.
+- **Checkbox** – Checkbox with support for indeterminate state.
+- **RadioButton** – Radio button for single selection.
+- **SwitchToggle** – Toggle switch with on/off labels.
+- **SegmentedControl** – Segmented control for selecting one option from a set.
+- **TabView** – Tab view combining segmented control and tab panels.
+- **DotIndicator** – Dot indicator for status or pagination.
+
+Each component is documented in the [demo](https://pristine.cylonsido.dev) and can be imported individually.
 
 ## Project Structure
 
 ```
 pristine-ui/
 ├── src/
-│   ├── components/          # Vue components (BaseButton, ModalDialog, etc.)
-│   ├── styles/
-│   │   ├── variables/       # Design tokens (colors, spacing, typography)
-│   │   ├── base/            # CSS reset, utilities
-│   │   └── features/        # Component-specific styles
+│   ├── components/          # Vue components (PushButton, TextField, etc.)
+│   ├── composables/         # Reusable composition functions
+│   ├── styles/              # Design tokens, base styles, typography
+│   ├── views/               # Demo page and views
 │   └── __tests__/           # Unit tests
-├── dist/                    # Built library (published)
+├── references/              # Apple HIG and ARIA reference PDFs
 ├── plans/                   # Project documentation and architecture
-├── references/              # Apple HIG and ARIA references
-└── contexts/                # Project inception and concept notes
+└── public/                  # Static assets for demo
 ```
 
 ## Development
@@ -69,7 +83,7 @@ pristine-ui/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/pristine-ui.git
+git clone https://github.com/cyril2day/pristine-ui.git
 cd pristine-ui
 
 # Install dependencies
@@ -97,13 +111,19 @@ pnpm test:unit
 pnpm lint
 ```
 
-## Styling Guidelines
+## Coding Guidelines
 
-- **Colors** – Use HSL for easy theme switching.
-- **Spacing** – Relative units (rem, em) and a 4‑px base unit.
-- **Breakpoints** – 320px (mobile), 735px (tablet), 1250px (desktop).
-- **BEM** – All component classes follow Block‑Element‑Modifier syntax.
-- **Dark Mode** – Implemented via CSS custom properties and `prefers-color-scheme`.
+The project follows a strong functional programming discipline combined with Vue 3 best practices:
+
+- **Pure functions & immutability** – Side effects are isolated, data is never mutated.
+- **TypeScript first** – Full type safety, discriminated unions, readonly types.
+- **Composition API** – Reusable composables, single‑responsibility components.
+- **Comprehensive testing** – Vitest for unit tests, @vue/test‑utils for components.
+- **Accessibility by design** – WAI‑ARIA roles, keyboard navigation, semantic HTML.
+
+## Live Demo
+
+Explore all components interactively at [https://pristine.cylonsido.dev](https://pristine.cylonsido.dev).
 
 ## Contributing
 
