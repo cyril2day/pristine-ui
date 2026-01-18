@@ -1,5 +1,11 @@
 # Pristine UI
 
+![npm version](https://img.shields.io/npm/v/pristine-ui?style=flat-square)
+![license](https://img.shields.io/npm/l/pristine-ui?style=flat-square)
+![Vue 3](https://img.shields.io/badge/Vue-3-4fc08d?style=flat-square&logo=vue.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?style=flat-square&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.3-646cff?style=flat-square&logo=vite)
+
 A collection of reusable, Apple‑inspired Vue 3 UI components built with TypeScript and Sass. Designed for developers who value clean design, accessibility, and a straightforward developer experience.
 
 ## Features
@@ -164,25 +170,20 @@ pnpm test:unit
 pnpm lint
 ```
 
-## Publishing
-
-If you are a maintainer, after merging changes:
-
-1. Update the version in `package.json` according to [semver](https://semver.org/).
-2. Run `pnpm build:lib` to ensure the dist files are up‑to‑date.
-3. Commit the changes (including the `dist/` folder if you wish).
-4. Run `npm publish` (requires npm authentication).
 
 ## License
 
-MIT © [Your Name](https://github.com/cyril2day)
+MIT © [psi](https://github.com/cyril2day)
 
 ## Acknowledgments
 
 - Design inspired by Apple’s Human Interface Guidelines
 - Built with [Vite](https://vite.dev/) and [Vue 3](https://vuejs.org/)
+- Icons from [Lucide](https://lucide.dev/)
 - Functional utilities powered by [Underscore.js](https://underscorejs.org/)
 
 ## Contributing
 
 Contributions are welcome! Please open an issue or a pull request on GitHub.
+
+**Maintainer:** psi – [cyril2day](https://github.com/cyril2day) – cylonsido@gmail.com
