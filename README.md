@@ -1,7 +1,7 @@
 # Pristine UI
 
-![npm version](https://img.shields.io/npm/v/pristine-ui?style=flat-square)
-![license](https://img.shields.io/npm/l/pristine-ui?style=flat-square)
+![npm version](https://img.shields.io/npm/v/@cyril2day2/pristine-ui?style=flat-square)
+![license](https://img.shields.io/npm/l/@cyril2day2/pristine-ui?style=flat-square)
 ![Vue 3](https://img.shields.io/badge/Vue-3-4fc08d?style=flat-square&logo=vue.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?style=flat-square&logo=typescript)
 ![Vite](https://img.shields.io/badge/Vite-7.3-646cff?style=flat-square&logo=vite)
@@ -32,11 +32,11 @@ A collection of reusable, Apple‑inspired Vue 3 UI components built with TypeSc
 ## Installation
 
 ```bash
-npm install pristine-ui
+npm install @cyril2day2/pristine-ui
 # or
-pnpm add pristine-ui
+pnpm add @cyril2day2/pristine-ui
 # or
-yarn add pristine-ui
+yarn add @cyril2day2/pristine-ui
 ```
 
 ## Peer Dependencies
@@ -53,7 +53,7 @@ npm install vue normalize.css
 
 ```vue
 <script setup lang="ts">
-import { PushButton, SwitchToggle } from 'pristine-ui'
+import { PushButton, SwitchToggle } from '@cyril2day2/pristine-ui'
 </script>
 
 <template>
@@ -67,7 +67,7 @@ import { PushButton, SwitchToggle } from 'pristine-ui'
 ```ts
 import { createApp } from 'vue'
 import App from './App.vue'
-import PristineUI from 'pristine-ui'
+import PristineUI from '@cyril2day2/pristine-ui'
 
 const app = createApp(App)
 app.use(PristineUI)
@@ -81,7 +81,7 @@ After registering the plugin, all components become available globally without e
 Components rely on CSS custom properties (design tokens) for colors, spacing, etc. To get the default Apple‑inspired appearance, import the provided CSS file:
 
 ```js
-import 'pristine-ui/dist/style.css'
+import '@cyril2day2/pristine-ui/dist/style.css'
 ```
 
 If you prefer to provide your own design tokens, you may omit this import. Components will still work but will fall back to browser defaults for colors and spacing.
