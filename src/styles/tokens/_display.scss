@@ -1,0 +1,34 @@
+// Display Tokens
+// =============================================================================
+// Tokens related to display properties: z‑index, opacity, visibility, etc.
+
+// -----------------------------------------------------------------------------
+// Z‑Index Layers
+// -----------------------------------------------------------------------------
+// Use these tokens to maintain consistent stacking order across components.
+
+:root {
+  --z-index-auto: auto;
+  --z-index-base: 0;
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-toast: 1080;
+  --z-index-max: 9999;
+}
+
+// -----------------------------------------------------------------------------
+// Opacity
+// -----------------------------------------------------------------------------
+
+:root {
+  --opacity-0: 0;
+  --opacity-25: 0.25;
+  --opacity-50: 0.5;
+  --opacity-75: 0.75;
+  --opacity-100: 1;
+}

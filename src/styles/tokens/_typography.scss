@@ -1,0 +1,145 @@
+@use 'breakpoints' as *;
+
+// Typography Tokens
+// =============================================================================
+// Font families, font sizes, font weights, line heights, and responsive scaling.
+
+// -----------------------------------------------------------------------------
+// Font Families
+// -----------------------------------------------------------------------------
+
+:root {
+  --font-family-sans: -apple-system, BlinkMacSystemFont, system-ui, "SF Pro", "SF Pro Text", "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: ui-monospace, "SF Mono", Monaco, Menlo, "Cascadia Code", "Source Code Pro", Consolas, monospace;
+  --font-family-serif: Georgia, "New York", Times, "Times New Roman", serif;
+}
+
+// -----------------------------------------------------------------------------
+// Font Size Scale (static)
+// -----------------------------------------------------------------------------
+// These values are used as the default scale (for desktop/large screens).
+// They may be adjusted per breakpoint in the “Responsive Typography” section.
+
+:root {
+  --text-xs: 0.75rem;   // 12px
+  --text-sm: 0.875rem;  // 14px
+  --text-base: 1rem;    // 16px
+  --text-lg: 1.125rem;  // 18px
+  --text-xl: 1.25rem;   // 20px
+  --text-2xl: 1.5rem;   // 24px
+  --text-3xl: 1.875rem; // 30px
+  --text-4xl: 2.25rem;  // 36px
+  --text-5xl: 3rem;     // 48px
+}
+
+// -----------------------------------------------------------------------------
+// Font Weights
+// -----------------------------------------------------------------------------
+
+:root {
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}
+
+// -----------------------------------------------------------------------------
+// Line Heights
+// -----------------------------------------------------------------------------
+
+:root {
+  --line-height-none: 1;
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.8;
+  --line-height-loose: 2;
+}
+
+// -----------------------------------------------------------------------------
+// Letter Spacing
+// -----------------------------------------------------------------------------
+
+:root {
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;
+}
+
+// -----------------------------------------------------------------------------
+// Responsive Typography Adjustments
+// -----------------------------------------------------------------------------
+// Adjust font sizes per breakpoint to improve readability on smaller screens.
+// Each media query reduces the base font size and scales the entire proportionally.
+// The scaling factor is determined manually for each breakpoint.
+
+// Small desktops (max-width: 1250px)
+@media (max-width: $breakpoint-small-desktop) {
+  :root {
+    --text-base: 0.975rem;
+    --text-lg: 1.1rem;
+    --text-xl: 1.225rem;
+    --text-2xl: 1.45rem;
+    --text-3xl: 1.8rem;
+    --text-4xl: 2.15rem;
+    --text-5xl: 2.85rem;
+  }
+}
+
+// Tablets / desktops transition (max-width: 1068px)
+@media (max-width: $breakpoint-tablet-desktop-transition) {
+  :root {
+    --text-base: 0.95rem;
+    --text-lg: 1.075rem;
+    --text-xl: 1.2rem;
+    --text-2xl: 1.4rem;
+    --text-3xl: 1.725rem;
+    --text-4xl: 2.05rem;
+    --text-5xl: 2.7rem;
+  }
+}
+
+// Small tablets (max-width: 1023px)
+@media (max-width: $breakpoint-small-tablet) {
+  :root {
+    --text-base: 0.925rem;
+    --text-lg: 1.05rem;
+    --text-xl: 1.175rem;
+    --text-2xl: 1.35rem;
+    --text-3xl: 1.65rem;
+    --text-4xl: 1.95rem;
+    --text-5xl: 2.55rem;
+  }
+}
+
+// Phones / tablets transition (max-width: 767px)
+@media (max-width: $breakpoint-phone-tablet-transition) {
+  :root {
+    --text-base: 0.9rem;
+    --text-lg: 1.025rem;
+    --text-xl: 1.15rem;
+    --text-2xl: 1.3rem;
+    --text-3xl: 1.575rem;
+    --text-4xl: 1.85rem;
+    --text-5xl: 2.4rem;
+  }
+}
+
+// Small phones (max-width: 480px)
+@media (max-width: $breakpoint-small-phone) {
+  :root {
+    --text-base: 0.875rem;
+    --text-lg: 1rem;
+    --text-xl: 1.125rem;
+    --text-2xl: 1.25rem;
+    --text-3xl: 1.5rem;
+    --text-4xl: 1.75rem;
+    --text-5xl: 2.25rem;
+  }
+}

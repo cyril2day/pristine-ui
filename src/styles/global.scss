@@ -1,0 +1,21 @@
+@use 'normalize.css';
+
+/* Project‑specific base styles */
+@use 'tokens/index';
+
+body {
+  font-family: var(--font-family-sans);
+  color: var(--text-primary);
+  background: var(--background-color);
+}
+
+button {
+  user-select: none;
+}
+
+/* Apply globally to all elements */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-tap-highlight-color: transparent;
+}

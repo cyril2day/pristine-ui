@@ -1,0 +1,53 @@
+# Build artifacts
+dist/*.map
+dist/*.css.map
+
+# Development files
+.vscode
+screenshots
+plans
+references
+coding-guidelines
+chapter5.txt
+demo-fixed.png
+diff.txt
+env.d.ts
+eslint.config.ts
+index.html
+tsconfig.*.json
+vite.config.ts
+vitest.config.ts
+
+# Demo page
+src/page
+src/App.vue
+src/main.ts
+
+# Tests
+src/**/__tests__
+src/**/*.test.ts
+
+# Source maps (optional)
+*.map
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea
+*.swp
+*.swo
+
+# Temporary
+tmp
+temp
