@@ -141,21 +141,6 @@ This repository includes a demo page that showcases all components. To run it lo
 
 4. Open `http://localhost:5173` in your browser.
 
-### Building the Library
-
-The library is built using Vite in library mode. To produce the distributable bundles:
-
-```bash
-pnpm build:lib
-```
-
-Outputs are placed in the `dist/` directory:
-
-- `pristine-ui.es.js` – ES module (for bundlers)
-- `pristine-ui.cjs.js` – CommonJS (for Node)
-- `index.d.ts` – TypeScript declarations
-- `style.css` – Compiled CSS with all design tokens and component styles
-
 ### Running Tests
 
 Unit tests are written with Vitest and Vue Test Utils.
@@ -179,7 +164,6 @@ MIT © [psi](https://github.com/cyril2day)
 
 - Design inspired by Apple’s Human Interface Guidelines
 - Built with [Vite](https://vite.dev/) and [Vue 3](https://vuejs.org/)
-- Icons from [Lucide](https://lucide.dev/)
 - Functional utilities powered by [Underscore.js](https://underscorejs.org/)
 
 ## Contributing
