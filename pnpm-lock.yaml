@@ -11,6 +11,9 @@ importers:
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
+      pristine-fp:
+        specifier: ^0.1.0
+        version: 0.1.0(vue@3.5.26(typescript@5.9.3))
       underscore:
         specifier: ^1.13.7
         version: 1.13.7
@@ -1867,6 +1870,12 @@ packages:
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
+
+  pristine-fp@0.1.0:
+    resolution: {integrity: sha512-wEg+IbeWf4Zj2ceYKr1YF9qMM6nIKXEvvqfLloQUCfG4fj8t2C7tuEYHGvelqD1Ud4Mo96Qun9JKoMw/rnEutg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      vue: ^3.5.26
 
   proto-list@1.2.4:
     resolution: {integrity: sha512-vtK/94akxsTMhe0/cbfpR+syPuszcuwhqVjJq26CuNDgFGj682oRBXOP5MJpv2r7JtE8MsiepGIqvvOTBwn2vA==}
@@ -4142,6 +4151,11 @@ snapshots:
       source-map-js: 1.2.1
 
   prelude-ls@1.2.1: {}
+
+  pristine-fp@0.1.0(vue@3.5.26(typescript@5.9.3)):
+    dependencies:
+      underscore: 1.13.7
+      vue: 3.5.26(typescript@5.9.3)
 
   proto-list@1.2.4: {}
 
