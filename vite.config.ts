@@ -50,6 +50,7 @@ export default defineConfig(({ mode }) => {
               vue: 'Vue',
             },
             exports: 'named',
+            assetFileNames: 'style.css',
           },
         },
         cssCodeSplit: true,
