@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, watch, ref } from 'vue'
-import { truthy, when } from '@/utils'
+import { truthy, when, always } from '@/utils'
+import { createKeyHandler, defaultTo } from '@/utils/component-helpers'
 
 const props = withDefaults(
   defineProps<{
@@ -44,16 +45,20 @@ watch(
 
 // Compute ARIA attribute values using functional style
 const ariaChecked = computed(() =>
-  when(props.indeterminate, () => 'mixed' as const) ??
-  when(checked.value, () => 'true' as const) ??
-  'false' as const
+  defaultTo(
+    when(props.indeterminate, always('mixed' as const)),
+    defaultTo(
+      when(checked.value, always('true' as const)),
+      'false' as const
+    )
+  )
 )
 
 // Data attributes using when helper
 const dataAttributes = computed(() => ({
-  'data-checked': when(checked.value, () => 'true'),
-  'data-indeterminate': when(props.indeterminate, () => 'true'),
-  'data-disabled': when(props.disabled, () => ''),
+  'data-checked': when(checked.value, always('true')),
+  'data-indeterminate': when(props.indeterminate, always('true')),
+  'data-disabled': when(props.disabled, always('')),
 }))
 
 // Pure state transformer
@@ -76,17 +81,13 @@ const handleToggle = () => {
 }
 
 // Keyboard dispatch map
-const keyActions: Record<string, () => void> = {
+const keyHandlers = createKeyHandler({
   Space: handleToggle,
   Enter: handleToggle,
-}
+})
 
 const handleKeydown = (event: KeyboardEvent) => {
-  const action = keyActions[event.code]
-  if (action) {
-    event.preventDefault()
-    action()
-  }
+  keyHandlers(event)
 }
 </script>
 

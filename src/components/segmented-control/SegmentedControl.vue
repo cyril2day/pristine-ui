@@ -9,8 +9,10 @@ type SegmentedShape = 'capsule' | 'rounded-rectangle'
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { cycleIndex, truthy, doWhen, when } from '@/utils'
-import { presenceAttr } from '@/utils/template-helpers'
+import { isEmpty } from 'underscore'
+import { cycleIndex, truthy, doWhen, when, presenceAttr } from '@/utils'
+import { createKeyHandler, equals, safeProp, defaultTo } from '@/utils/component-helpers'
+
 
 const props = withDefaults(
   defineProps<{
@@ -35,28 +37,32 @@ const emit = defineEmits<{
 const selectedId = computed(() => modelValue.value)
 const enabledIndices = computed(() =>
   props.items
-    .map((item, index) => ({ item, index }))
-    .filter(({ item }) => !item.disabled)
+    .map((item: SegmentedItem, index: number) => ({ item, index }))
+    .filter(({ item }: { item: SegmentedItem }) => !truthy(item.disabled))
     .map(({ index }) => index)
 )
 const selectedIndex = computed(() =>
-  props.items.findIndex(item => item.id === selectedId.value)
+  props.items.findIndex((item: SegmentedItem) => equals(selectedId.value)(item.id))
 )
 
 // Helper functions using functional utilities
-const isSelected = (id: string | number) => selectedId.value === id
+const isSelected = (id: string | number) => equals(selectedId.value)(id)
 const isDisabled = (id: string | number) => {
   if (props.disabled) return true
-  const item = props.items.find(item => item.id === id)
-  return item?.disabled ?? false
+  const item = props.items.find((item: SegmentedItem) => equals(id)(item.id))
+  return defaultTo(safeProp(item, 'disabled'), false)
 }
 
 function selectItem(id: string | number) {
-  const item = props.items.find(item => item.id === id)
+  const item = props.items.find((item: SegmentedItem) => equals(id)(item.id))
   if (!item || isDisabled(id)) return
 
   modelValue.value = id
   emit('select', item)
+}
+
+function findItemIndex(id: string | number) {
+  return props.items.findIndex((item: SegmentedItem) => equals(id)(item.id))
 }
 
 // Keyboard navigation
@@ -65,12 +71,12 @@ const containerRef = ref<HTMLElement | null>(null)
 
 function moveSelection(delta: number) {
   const enabled = enabledIndices.value
-  if (enabled.length === 0) return
+  if (isEmpty(enabled)) return
 
-  const current = enabled.findIndex(idx => idx === selectedIndex.value)
+  const current = enabled.findIndex(equals(selectedIndex.value))
   const next = cycleIndex(current, delta, enabled.length)
-  const nextIndex = enabled[next]
-  const nextItem = typeof nextIndex === 'number' ? props.items[nextIndex] : undefined
+  const nextIndex = enabled[next]!
+  const nextItem = props.items[nextIndex]
   doWhen(truthy(nextItem), () => {
     selectItem(nextItem!.id)
     focusedIndex.value = nextIndex!
@@ -80,48 +86,42 @@ function moveSelection(delta: number) {
 function handleKeydown(event: KeyboardEvent) {
   if (props.disabled) return
 
-  const { key } = event
-  const handlers: Record<string, (event: KeyboardEvent) => void> = {
-    ArrowLeft: (e) => { e.preventDefault(); moveSelection(-1) },
-    ArrowUp: (e) => { e.preventDefault(); moveSelection(-1) },
-    ArrowRight: (e) => { e.preventDefault(); moveSelection(1) },
-    ArrowDown: (e) => { e.preventDefault(); moveSelection(1) },
-    Home: (e) => {
-      e.preventDefault()
+  const keyHandlers = createKeyHandler({
+    ArrowLeft: (e: KeyboardEvent) => moveSelection(-1),
+    ArrowUp: (e: KeyboardEvent) => moveSelection(-1),
+    ArrowRight: (e: KeyboardEvent) => moveSelection(1),
+    ArrowDown: (e: KeyboardEvent) => moveSelection(1),
+    Home: (e: KeyboardEvent) => {
       const enabled = enabledIndices.value
-      when(enabled.length > 0, () => {
-        const firstIndex = enabled[0]
-        const first = typeof firstIndex === 'number' ? props.items[firstIndex] : undefined
+      when(!isEmpty(enabled), () => {
+        const firstIndex = enabled[0]!
+        const first = props.items[firstIndex]
         doWhen(truthy(first), () => selectItem(first!.id))
       })
     },
-    End: (e) => {
-      e.preventDefault()
+    End: (e: KeyboardEvent) => {
       const enabled = enabledIndices.value
-      when(enabled.length > 0, () => {
-        const lastIndex = enabled[enabled.length - 1]
-        const last = typeof lastIndex === 'number' ? props.items[lastIndex] : undefined
+      when(!isEmpty(enabled), () => {
+        const lastIndex = enabled[enabled.length - 1]!
+        const last = props.items[lastIndex]
         doWhen(truthy(last), () => selectItem(last!.id))
       })
     },
-    Enter: (e) => {
-      e.preventDefault()
+    Enter: (e: KeyboardEvent) => {
       doWhen(focusedIndex.value >= 0, () => {
         const item = props.items[focusedIndex.value]
         doWhen(truthy(item), () => selectItem(item!.id))
       })
     },
-    ' ': (e) => {
-      e.preventDefault()
+    ' ': (e: KeyboardEvent) => {
       doWhen(focusedIndex.value >= 0, () => {
         const item = props.items[focusedIndex.value]
         doWhen(truthy(item), () => selectItem(item!.id))
       })
     },
-  }
+  })
 
-  const handler = handlers[key]
-  doWhen(truthy(handler), () => handler!(event))
+  keyHandlers(event)
 }
 </script>
 
@@ -154,7 +154,7 @@ function handleKeydown(event: KeyboardEvent) {
         :data-selected="presenceAttr(isSelected(item.id))"
         :data-disabled="presenceAttr(isDisabled(item.id))"
         @click="selectItem(item.id)"
-        @focus="focusedIndex = items.findIndex(i => i.id === item.id)"
+        @focus="focusedIndex = findItemIndex(item.id)"
         role="radio"
         :aria-checked="isSelected(item.id)"
         :aria-disabled="isDisabled(item.id)"

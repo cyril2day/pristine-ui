@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { truthy } from '@/utils'
+import { truthy, presenceAttr, doWhen, always } from '@/utils'
+
+const booleanDataAttr = (cond: boolean) => doWhen(truthy(cond), always('true'))
 
 const props = withDefaults(
   defineProps<{
@@ -18,8 +20,8 @@ const emit = defineEmits<{
 }>()
 
 const buttonAttributes = computed(() => ({
-  'data-checked': checked.value ? 'true' : undefined,
-  'data-disabled': props.disabled ? '' : undefined,
+  'data-checked': booleanDataAttr(checked.value),
+  'data-disabled': presenceAttr(props.disabled),
 }))
 
 function toggle() {
