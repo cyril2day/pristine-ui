@@ -15,12 +15,12 @@ describe('SegmentedControl', () => {
       props: { items: sampleItems },
     });
 
-    const container = wrapper.find('.segmented-control');
+    const container = wrapper.find('.pr-segmented-control');
     expect(container.exists()).toBe(true);
     expect(container.attributes('data-shape')).toBe('capsule');
     expect(container.attributes('data-disabled')).toBeUndefined();
 
-    const buttons = wrapper.findAll('.segmented-control__segment');
+    const buttons = wrapper.findAll('.pr-segmented-control__segment');
     expect(buttons).toHaveLength(4);
     expect(buttons[0]?.text()).toBe('Option A');
     expect(buttons[1]?.text()).toBe('Option B');
@@ -35,7 +35,7 @@ describe('SegmentedControl', () => {
       const wrapper = mount(SegmentedControl, {
         props: { items: sampleItems, shape },
       });
-      expect(wrapper.find('.segmented-control').attributes('data-shape')).toBe(shape);
+      expect(wrapper.find('.pr-segmented-control').attributes('data-shape')).toBe(shape);
     });
   });
 
@@ -44,10 +44,10 @@ describe('SegmentedControl', () => {
       props: { items: sampleItems, disabled: true },
     });
 
-    const container = wrapper.find('.segmented-control');
+    const container = wrapper.find('.pr-segmented-control');
     expect(container.attributes('data-disabled')).toBe('');
 
-    const buttons = wrapper.findAll('.segmented-control__segment');
+    const buttons = wrapper.findAll('.pr-segmented-control__segment');
     buttons.forEach((button) => {
       expect(button.attributes('disabled')).toBe('');
       expect(button.attributes('data-disabled')).toBe('');
@@ -59,7 +59,7 @@ describe('SegmentedControl', () => {
       props: { items: sampleItems },
     });
 
-    const buttons = wrapper.findAll('.segmented-control__segment');
+    const buttons = wrapper.findAll('.pr-segmented-control__segment');
     // third item is disabled
     expect(buttons[2]?.attributes('data-disabled')).toBe('');
     expect(buttons[2]?.attributes('disabled')).toBe('');
@@ -74,7 +74,7 @@ describe('SegmentedControl', () => {
       props: { items: sampleItems },
     });
 
-    const buttons = wrapper.findAll('.segmented-control__segment');
+    const buttons = wrapper.findAll('.pr-segmented-control__segment');
     const button = buttons[1];
     expect(button).toBeDefined();
     await button!.trigger('click');
@@ -100,7 +100,7 @@ describe('SegmentedControl', () => {
       props: { items: sampleItems },
     });
 
-    const buttons = wrapper.findAll('.segmented-control__segment');
+    const buttons = wrapper.findAll('.pr-segmented-control__segment');
     const button = buttons[2]; // disabled item
     expect(button).toBeDefined();
     await button!.trigger('click');
@@ -114,7 +114,7 @@ describe('SegmentedControl', () => {
       props: { items: sampleItems, disabled: true },
     });
 
-    const buttons = wrapper.findAll('.segmented-control__segment');
+    const buttons = wrapper.findAll('.pr-segmented-control__segment');
     const button = buttons[0];
     expect(button).toBeDefined();
     await button!.trigger('click');
@@ -128,7 +128,7 @@ describe('SegmentedControl', () => {
       props: { items: sampleItems, modelValue: 2 },
     });
 
-    const buttons = wrapper.findAll('.segmented-control__segment');
+    const buttons = wrapper.findAll('.pr-segmented-control__segment');
     expect(buttons[1]?.attributes('data-selected')).toBe('');
 
     // change selection via click
@@ -145,7 +145,7 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
+      const container = wrapper.find('.pr-segmented-control');
       await container.trigger('keydown', { key: 'ArrowRight' });
 
       expect(wrapper.emitted('update:modelValue')).toHaveLength(1);
@@ -158,7 +158,7 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
+      const container = wrapper.find('.pr-segmented-control');
       await container.trigger('keydown', { key: 'ArrowRight' });
 
       // should wrap to first enabled (id 1)
@@ -172,7 +172,7 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
+      const container = wrapper.find('.pr-segmented-control');
       await container.trigger('keydown', { key: 'ArrowRight' });
 
       // should skip id 3 (disabled) and go to id 4
@@ -186,7 +186,7 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
+      const container = wrapper.find('.pr-segmented-control');
       await container.trigger('keydown', { key: 'ArrowDown' });
       expect(wrapper.emitted('update:modelValue')![0]).toEqual([2]);
     });
@@ -197,7 +197,7 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
+      const container = wrapper.find('.pr-segmented-control');
       await container.trigger('keydown', { key: 'Home' });
       expect(wrapper.emitted('update:modelValue')![0]).toEqual([1]);
     });
@@ -208,7 +208,7 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
+      const container = wrapper.find('.pr-segmented-control');
       await container.trigger('keydown', { key: 'End' });
       expect(wrapper.emitted('update:modelValue')![0]).toEqual([4]);
     });
@@ -219,9 +219,9 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
+      const container = wrapper.find('.pr-segmented-control');
       // first focus a different segment (simulate focus)
-      const buttons = wrapper.findAll('.segmented-control__segment');
+      const buttons = wrapper.findAll('.pr-segmented-control__segment');
       const button = buttons[3];
       expect(button).toBeDefined();
       await button!.trigger('focus');
@@ -237,8 +237,8 @@ describe('SegmentedControl', () => {
         attachTo: document.body,
       });
 
-      const container = wrapper.find('.segmented-control');
-      const buttons = wrapper.findAll('.segmented-control__segment');
+      const container = wrapper.find('.pr-segmented-control');
+      const buttons = wrapper.findAll('.pr-segmented-control__segment');
       const button = buttons[3];
       expect(button).toBeDefined();
       await button!.trigger('focus');

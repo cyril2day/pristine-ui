@@ -8,7 +8,7 @@ describe('CardDisplay', () => {
       slots: { default: 'Card content' },
     });
 
-    const card = wrapper.find('.card-display');
+    const card = wrapper.find('.pr-card-display');
     expect(card.exists()).toBe(true);
     expect(card.text()).toBe('Card content');
     expect(card.attributes('data-variant')).toBe('outlined');
@@ -22,7 +22,7 @@ describe('CardDisplay', () => {
       const wrapper = mount(CardDisplay, {
         props: { variant },
       });
-      expect(wrapper.find('.card-display').attributes('data-variant')).toBe(variant);
+      expect(wrapper.find('.pr-card-display').attributes('data-variant')).toBe(variant);
     });
   });
 
@@ -40,8 +40,8 @@ describe('CardDisplay', () => {
 
   it('has correct default styling classes', () => {
     const wrapper = mount(CardDisplay);
-    const card = wrapper.find('.card-display');
-    expect(card.classes()).toContain('card-display');
+    const card = wrapper.find('.pr-card-display');
+    expect(card.classes()).toContain('pr-card-display');
     // Should not have any other unexpected classes
     expect(card.classes().length).toBe(1);
   });
