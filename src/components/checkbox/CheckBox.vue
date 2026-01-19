@@ -92,7 +92,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 <template>
   <div
-    class="check-box"
+    class="pr-check-box"
     role="checkbox"
     :aria-checked="ariaChecked"
     :aria-disabled="disabled"
@@ -112,139 +112,8 @@ const handleKeydown = (event: KeyboardEvent) => {
       :checked="checked"
       :disabled="disabled"
       aria-hidden="true"
-      class="check-box__input"
+      class="pr-check-box__input"
     />
-    <span class="check-box__visual" aria-hidden="true"></span>
+    <span class="pr-check-box__visual" aria-hidden="true"></span>
   </div>
 </template>
-
-<style scoped lang="scss">
-@use '@/styles/tokens/index' as tokens;
-
-.check-box {
-  // Display
-  align-items: center;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  user-select: none;
-
-  // Positioning
-  position: relative;
-
-  // Box Model
-  border: var(--border-width-2) solid var(--color-gray);
-  border-radius: var(--radius-sm);
-  height: var(--checkbox-size, var(--space-4));
-  width: var(--checkbox-size, var(--space-4));
-
-  // Colors & Typography
-  background-color: transparent;
-
-  // Other
-  outline: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-
-  &:focus-visible {
-    // Box Model
-    outline: var(--border-width-2) solid var(--color-blue);
-    outline-offset: var(--space-1);
-  }
-
-  // Checked state
-  &[data-checked='true'] {
-    // Colors & Typography
-    background-color: var(--color-blue);
-    border-color: var(--color-blue);
-
-    .check-box__visual::after {
-      // Display
-      content: '';
-      // Positioning
-      position: absolute;
-      top: 45%;
-      left: 50%;
-      // Box Model
-      width: 40%;
-      height: 20%;
-      border: solid var(--color-white);
-      border-width: 0 0 2px 2px;
-      // Other
-      transform: translate(-50%, -50%) rotate(-45deg);
-    }
-  }
-
-  // Indeterminate state
-  &[data-indeterminate='true'] {
-    // Colors & Typography
-    background-color: var(--color-blue);
-    border-color: var(--color-blue);
-
-    .check-box__visual::after {
-      // Display
-      content: '';
-      // Positioning
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      // Box Model
-      width: 60%;
-      height: 2px;
-      // Colors & Typography
-      background-color: var(--color-white);
-      // Other
-      transform: translate(-50%, -50%);
-    }
-  }
-
-  // Disabled state
-  &[data-disabled] {
-    // Display
-    cursor: not-allowed;
-    // Colors & Typography
-    opacity: var(--opacity-50);
-    // Other
-    pointer-events: none;
-  }
-
-  // Hover state
-  &:not([data-disabled]):hover {
-    // Colors & Typography
-    border-color: var(--color-gray4);
-  }
-
-  &:not([data-disabled]):active {
-    // Colors & Typography
-    border-color: var(--color-blue);
-  }
-}
-
-.check-box__input {
-  // Display
-  cursor: pointer;
-  // Positioning
-  position: absolute;
-  // Box Model
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  width: 100%;
-  // Other
-  z-index: var(--z-index-base);
-}
-
-.check-box__visual {
-  // Display
-  display: block;
-  // Positioning
-  left: 0;
-  position: absolute;
-  top: 0;
-  // Box Model
-  border-radius: inherit;
-  height: 100%;
-  width: 100%;
-  // Other
-  pointer-events: none;
-}
-</style>

@@ -6,7 +6,7 @@ describe('CheckBox', () => {
   it('renders with default props', () => {
     const wrapper = mount(CheckBox)
 
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
     expect(root.exists()).toBe(true)
     expect(root.attributes('role')).toBe('checkbox')
     expect(root.attributes('aria-checked')).toBe('false')
@@ -21,7 +21,7 @@ describe('CheckBox', () => {
       props: { modelValue: true },
     })
 
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
     expect(root.attributes('aria-checked')).toBe('true')
     expect(root.attributes('data-checked')).toBe('true')
 
@@ -36,7 +36,7 @@ describe('CheckBox', () => {
       props: { indeterminate: true },
     })
 
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
     expect(root.attributes('aria-checked')).toBe('mixed')
     expect(root.attributes('data-indeterminate')).toBe('true')
   })
@@ -46,7 +46,7 @@ describe('CheckBox', () => {
       props: { disabled: true },
     })
 
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
     expect(root.attributes('aria-disabled')).toBe('true')
     expect(root.attributes('data-disabled')).toBe('')
     expect(root.attributes('tabindex')).toBe('-1')
@@ -56,7 +56,7 @@ describe('CheckBox', () => {
     const wrapper = mount(CheckBox, {
       props: { modelValue: false },
     })
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
 
     await root.trigger('click')
 
@@ -72,7 +72,7 @@ describe('CheckBox', () => {
     const wrapper = mount(CheckBox, {
       props: { disabled: true },
     })
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
 
     await root.trigger('click')
 
@@ -84,7 +84,7 @@ describe('CheckBox', () => {
     const wrapper = mount(CheckBox, {
       props: { modelValue: false },
     })
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
 
     await root.trigger('keydown', { code: 'Space' })
 
@@ -97,7 +97,7 @@ describe('CheckBox', () => {
     const wrapper = mount(CheckBox, {
       props: { modelValue: false },
     })
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
 
     await root.trigger('keydown', { code: 'Enter' })
 
@@ -110,7 +110,7 @@ describe('CheckBox', () => {
     const wrapper = mount(CheckBox, {
       props: { modelValue: false },
     })
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
 
     await root.trigger('keydown', { code: 'KeyA' })
 
@@ -122,7 +122,7 @@ describe('CheckBox', () => {
     const wrapper = mount(CheckBox, {
       props: { indeterminate: true, modelValue: false },
     })
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
 
     await root.trigger('click')
 
@@ -139,7 +139,7 @@ describe('CheckBox', () => {
       props: { id: 'chk1', name: 'agree', value: 'yes' },
     })
 
-    const input = wrapper.find('.check-box__input')
+    const input = wrapper.find('.pr-check-box__input')
     expect(input.attributes('id')).toBe('chk1')
     expect(input.attributes('name')).toBe('agree')
     expect(input.attributes('value')).toBe('yes')
@@ -150,7 +150,7 @@ describe('CheckBox', () => {
       props: { ariaLabel: 'Accept terms', ariaLabelledby: 'label1' },
     })
 
-    const root = wrapper.find('.check-box')
+    const root = wrapper.find('.pr-check-box')
     expect(root.attributes('aria-label')).toBe('Accept terms')
     expect(root.attributes('aria-labelledby')).toBe('label1')
   })
@@ -160,10 +160,10 @@ describe('CheckBox', () => {
       props: { modelValue: false },
     })
 
-    await wrapper.find('.check-box').trigger('click')
+    await wrapper.find('.pr-check-box').trigger('click')
     expect(wrapper.emitted('update:modelValue')![0]).toEqual([true])
 
     await wrapper.setProps({ modelValue: true })
-    expect(wrapper.find('.check-box').attributes('data-checked')).toBe('true')
+    expect(wrapper.find('.pr-check-box').attributes('data-checked')).toBe('true')
   })
 })

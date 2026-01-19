@@ -6,7 +6,7 @@ describe('SwitchToggle', () => {
   it('renders with default props', () => {
     const wrapper = mount(SwitchToggle)
 
-    const root = wrapper.find('.switch-toggle')
+    const root = wrapper.find('.pr-switch-toggle')
     expect(root.exists()).toBe(true)
     expect(root.attributes('data-checked')).toBeUndefined()
     expect(root.attributes('data-disabled')).toBeUndefined()
@@ -20,12 +20,12 @@ describe('SwitchToggle', () => {
       props: { modelValue: true },
     })
 
-    expect(wrapper.find('.switch-toggle').attributes('data-checked')).toBe('true')
-    expect(wrapper.find('.switch-toggle').attributes('aria-checked')).toBe('true')
+    expect(wrapper.find('.pr-switch-toggle').attributes('data-checked')).toBe('true')
+    expect(wrapper.find('.pr-switch-toggle').attributes('aria-checked')).toBe('true')
 
     await wrapper.setProps({ modelValue: false })
-    expect(wrapper.find('.switch-toggle').attributes('data-checked')).toBeUndefined()
-    expect(wrapper.find('.switch-toggle').attributes('aria-checked')).toBe('false')
+    expect(wrapper.find('.pr-switch-toggle').attributes('data-checked')).toBeUndefined()
+    expect(wrapper.find('.pr-switch-toggle').attributes('aria-checked')).toBe('false')
   })
 
   it('applies disabled prop correctly', () => {
@@ -33,7 +33,7 @@ describe('SwitchToggle', () => {
       props: { disabled: true },
     })
 
-    const root = wrapper.find('.switch-toggle')
+    const root = wrapper.find('.pr-switch-toggle')
     expect(root.attributes('data-disabled')).toBe('')
     expect(root.attributes('aria-disabled')).toBe('true')
     expect(root.attributes('tabindex')).toBe('0') // still focusable but aria-disabled indicates disabled
@@ -44,8 +44,8 @@ describe('SwitchToggle', () => {
       props: { disabled: false },
     })
 
-    expect(wrapper.find('.switch-toggle').attributes('data-disabled')).toBeUndefined()
-    expect(wrapper.find('.switch-toggle').attributes('aria-disabled')).toBe('false')
+    expect(wrapper.find('.pr-switch-toggle').attributes('data-disabled')).toBeUndefined()
+    expect(wrapper.find('.pr-switch-toggle').attributes('aria-disabled')).toBe('false')
   })
 
   it('emits update:modelValue when clicked and not disabled', async () => {
@@ -53,7 +53,7 @@ describe('SwitchToggle', () => {
       props: { modelValue: false },
     })
 
-    await wrapper.find('.switch-toggle').trigger('click')
+    await wrapper.find('.pr-switch-toggle').trigger('click')
 
     expect(wrapper.emitted()).toHaveProperty('update:modelValue')
     expect(wrapper.emitted('update:modelValue')).toHaveLength(1)
@@ -65,7 +65,7 @@ describe('SwitchToggle', () => {
       props: { modelValue: false },
     })
 
-    await wrapper.find('.switch-toggle').trigger('click')
+    await wrapper.find('.pr-switch-toggle').trigger('click')
 
     expect(wrapper.emitted()).toHaveProperty('change')
     expect(wrapper.emitted('change')).toHaveLength(1)
@@ -77,7 +77,7 @@ describe('SwitchToggle', () => {
       props: { modelValue: false, disabled: true },
     })
 
-    await wrapper.find('.switch-toggle').trigger('click')
+    await wrapper.find('.pr-switch-toggle').trigger('click')
 
     expect(wrapper.emitted()).not.toHaveProperty('update:modelValue')
     expect(wrapper.emitted()).not.toHaveProperty('change')
@@ -88,7 +88,7 @@ describe('SwitchToggle', () => {
       props: { modelValue: false },
     })
 
-    await wrapper.find('.switch-toggle').trigger('keydown', { code: 'Space' })
+    await wrapper.find('.pr-switch-toggle').trigger('keydown', { code: 'Space' })
 
     expect(wrapper.emitted('update:modelValue')).toHaveLength(1)
     expect(wrapper.emitted('update:modelValue')![0]).toEqual([true])
@@ -100,7 +100,7 @@ describe('SwitchToggle', () => {
       props: { modelValue: false },
     })
 
-    await wrapper.find('.switch-toggle').trigger('keydown', { code: 'Enter' })
+    await wrapper.find('.pr-switch-toggle').trigger('keydown', { code: 'Enter' })
 
     expect(wrapper.emitted('update:modelValue')).toHaveLength(1)
     expect(wrapper.emitted('update:modelValue')![0]).toEqual([true])
@@ -112,7 +112,7 @@ describe('SwitchToggle', () => {
       props: { modelValue: false },
     })
 
-    await wrapper.find('.switch-toggle').trigger('keydown', { code: 'Tab' })
+    await wrapper.find('.pr-switch-toggle').trigger('keydown', { code: 'Tab' })
 
     expect(wrapper.emitted()).not.toHaveProperty('update:modelValue')
     expect(wrapper.emitted()).not.toHaveProperty('change')
@@ -124,10 +124,10 @@ describe('SwitchToggle', () => {
       props: { modelValue: false },
     })
 
-    await wrapper.find('.switch-toggle').trigger('click')
+    await wrapper.find('.pr-switch-toggle').trigger('click')
     expect(wrapper.emitted('update:modelValue')![0]).toEqual([true])
 
     await wrapper.setProps({ modelValue: true })
-    expect(wrapper.find('.switch-toggle').attributes('data-checked')).toBe('true')
+    expect(wrapper.find('.pr-switch-toggle').attributes('data-checked')).toBe('true')
   })
 })

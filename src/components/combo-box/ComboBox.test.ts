@@ -12,29 +12,29 @@ const sampleItems = [
 describe('ComboBox', () => {
   it('renders with default props', () => {
     const wrapper = mount(ComboBox)
-    expect(wrapper.find('.combo-box').exists()).toBe(true)
+    expect(wrapper.find('.pr-combo-box').exists()).toBe(true)
     expect(wrapper.find('input').exists()).toBe(true)
-    expect(wrapper.find('.combo-box__toggle').exists()).toBe(true)
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(false) // closed by default
+    expect(wrapper.find('.pr-combo-box__toggle').exists()).toBe(true)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(false) // closed by default
   })
 
   it('applies variant prop correctly', () => {
     const variants = ['filled', 'default'] as const
     variants.forEach((variant) => {
       const wrapper = mount(ComboBox, { props: { variant } })
-      expect(wrapper.find('.combo-box').attributes('data-variant')).toBe(variant)
+      expect(wrapper.find('.pr-combo-box').attributes('data-variant')).toBe(variant)
     })
   })
 
   it('applies disabled prop correctly', () => {
     const wrapper = mount(ComboBox, { props: { disabled: true } })
-    expect(wrapper.find('.combo-box').attributes('data-disabled')).toBe('')
+    expect(wrapper.find('.pr-combo-box').attributes('data-disabled')).toBe('')
     expect(wrapper.find('input').attributes('disabled')).toBe('')
   })
 
   it('does not add data-disabled attribute when disabled is false', () => {
     const wrapper = mount(ComboBox, { props: { disabled: false } })
-    expect(wrapper.find('.combo-box').attributes('data-disabled')).toBeUndefined()
+    expect(wrapper.find('.pr-combo-box').attributes('data-disabled')).toBeUndefined()
     expect(wrapper.find('input').attributes('disabled')).toBeUndefined()
   })
 
@@ -45,9 +45,9 @@ describe('ComboBox', () => {
 
   it('renders items when dropdown is open', async () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
-    await wrapper.find('.combo-box__toggle').trigger('click')
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(true)
-    const options = wrapper.findAll('.combo-box__listbox li')
+    await wrapper.find('.pr-combo-box__toggle').trigger('click')
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(true)
+    const options = wrapper.findAll('.pr-combo-box__listbox li')
     expect(options).toHaveLength(4)
     expect(options[0]!.text()).toBe('Apple')
   })
@@ -57,8 +57,8 @@ describe('ComboBox', () => {
     const input = wrapper.find('input')
     await input.setValue('Ban')
     // dropdown should open automatically (if not open)
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(true)
-    const options = wrapper.findAll('.combo-box__listbox li')
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(true)
+    const options = wrapper.findAll('.pr-combo-box__listbox li')
     expect(options).toHaveLength(1)
     expect(options[0]!.text()).toBe('Banana')
   })
@@ -73,8 +73,8 @@ describe('ComboBox', () => {
 
   it('emits select event when an item is clicked', async () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
-    await wrapper.find('.combo-box__toggle').trigger('click')
-    const options = wrapper.findAll('.combo-box__listbox li')
+    await wrapper.find('.pr-combo-box__toggle').trigger('click')
+    const options = wrapper.findAll('.pr-combo-box__listbox li')
     expect(options).toHaveLength(4)
     await options[1]!.trigger('click')
     expect(wrapper.emitted('select')).toHaveLength(1)
@@ -84,18 +84,18 @@ describe('ComboBox', () => {
 
   it('closes dropdown after selection', async () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
-    await wrapper.find('.combo-box__toggle').trigger('click')
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(true)
-    const options = wrapper.findAll('.combo-box__listbox li')
+    await wrapper.find('.pr-combo-box__toggle').trigger('click')
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(true)
+    const options = wrapper.findAll('.pr-combo-box__listbox li')
     await options[0]!.trigger('click')
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(false)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(false)
   })
 
   it('emits open and close events when toggled', async () => {
     const wrapper = mount(ComboBox)
-    await wrapper.find('.combo-box__toggle').trigger('click')
+    await wrapper.find('.pr-combo-box__toggle').trigger('click')
     expect(wrapper.emitted('open')).toHaveLength(1)
-    await wrapper.find('.combo-box__toggle').trigger('click')
+    await wrapper.find('.pr-combo-box__toggle').trigger('click')
     expect(wrapper.emitted('close')).toHaveLength(1)
   })
 
@@ -115,9 +115,9 @@ describe('ComboBox', () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
     await wrapper.find('input').trigger('focus')
     // dropdown should open on focus
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(true)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(true)
     await wrapper.find('input').trigger('keydown', { key: 'ArrowDown' })
-    const activeOption = wrapper.find('.combo-box__option--active')
+    const activeOption = wrapper.find('.pr-combo-box__option--active')
     expect(activeOption.exists()).toBe(true)
     expect(activeOption.text()).toBe('Apple')
   })
@@ -126,7 +126,7 @@ describe('ComboBox', () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
     await wrapper.find('input').trigger('focus')
     await wrapper.find('input').trigger('keydown', { key: 'ArrowUp' })
-    const activeOption = wrapper.find('.combo-box__option--active')
+    const activeOption = wrapper.find('.pr-combo-box__option--active')
     expect(activeOption.exists()).toBe(true)
     // ArrowUp from first item should wrap to last
     expect(activeOption.text()).toBe('Date')
@@ -139,42 +139,42 @@ describe('ComboBox', () => {
     await wrapper.find('input').trigger('keydown', { key: 'Enter' })
     expect(wrapper.emitted('select')).toHaveLength(1)
     expect(wrapper.emitted('select')![0]).toEqual([sampleItems[0]])
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(false)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(false)
   })
 
   it('keyboard navigation: Escape closes dropdown', async () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
     await wrapper.find('input').trigger('focus')
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(true)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(true)
     await wrapper.find('input').trigger('keydown', { key: 'Escape' })
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(false)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(false)
   })
 
   it('closes dropdown when clicking outside', async () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
-    await wrapper.find('.combo-box__toggle').trigger('click')
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(true)
+    await wrapper.find('.pr-combo-box__toggle').trigger('click')
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(true)
     // Simulate click outside by triggering a click on the document body
     document.body.click()
     await wrapper.vm.$nextTick()
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(false)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(false)
   })
 
   it('does not close dropdown when clicking inside', async () => {
     const wrapper = mount(ComboBox, { props: { items: sampleItems } })
-    await wrapper.find('.combo-box__toggle').trigger('click')
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(true)
-    const options = wrapper.findAll('.combo-box__listbox li')
+    await wrapper.find('.pr-combo-box__toggle').trigger('click')
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(true)
+    const options = wrapper.findAll('.pr-combo-box__listbox li')
     await options[0]!.trigger('click')
     // dropdown should close after selection, but we can assert it's closed (already tested)
-    expect(wrapper.find('.combo-box__listbox').exists()).toBe(false)
+    expect(wrapper.find('.pr-combo-box__listbox').exists()).toBe(false)
   })
 
   it('applies data-has-value attribute when modelValue is not empty', async () => {
     const wrapper = mount(ComboBox, { props: { modelValue: 'Apple' } })
-    expect(wrapper.find('.combo-box').attributes('data-has-value')).toBe('')
+    expect(wrapper.find('.pr-combo-box').attributes('data-has-value')).toBe('')
     await wrapper.setProps({ modelValue: '' })
-    expect(wrapper.find('.combo-box').attributes('data-has-value')).toBeUndefined()
+    expect(wrapper.find('.pr-combo-box').attributes('data-has-value')).toBeUndefined()
   })
 
   it('passes through arbitrary attributes to the input', () => {

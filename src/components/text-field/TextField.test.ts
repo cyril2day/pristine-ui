@@ -9,11 +9,11 @@ describe('TextField', () => {
     const input = wrapper.find('input')
     expect(input.exists()).toBe(true)
     expect(input.attributes('placeholder')).toBeUndefined()
-    expect(wrapper.find('.text-field').attributes('data-variant')).toBe('default')
-    expect(wrapper.find('.text-field').attributes('data-clearable')).toBeUndefined()
-    expect(wrapper.find('.text-field').attributes('data-disabled')).toBeUndefined()
-    expect(wrapper.find('.text-field').attributes('data-has-value')).toBeUndefined()
-    expect(wrapper.find('.text-field__clear').exists()).toBe(false)
+    expect(wrapper.find('.pr-text-field').attributes('data-variant')).toBe('default')
+    expect(wrapper.find('.pr-text-field').attributes('data-clearable')).toBeUndefined()
+    expect(wrapper.find('.pr-text-field').attributes('data-disabled')).toBeUndefined()
+    expect(wrapper.find('.pr-text-field').attributes('data-has-value')).toBeUndefined()
+    expect(wrapper.find('.pr-text-field__clear').exists()).toBe(false)
   })
 
   it('applies variant prop correctly', () => {
@@ -23,7 +23,7 @@ describe('TextField', () => {
       const wrapper = mount(TextField, {
         props: { variant },
       })
-      expect(wrapper.find('.text-field').attributes('data-variant')).toBe(variant)
+      expect(wrapper.find('.pr-text-field').attributes('data-variant')).toBe(variant)
     })
   })
 
@@ -31,21 +31,21 @@ describe('TextField', () => {
     const wrapper = mount(TextField, {
       props: { clearable: true },
     })
-    expect(wrapper.find('.text-field').attributes('data-clearable')).toBe('')
+    expect(wrapper.find('.pr-text-field').attributes('data-clearable')).toBe('')
   })
 
   it('does not add data-clearable attribute when clearable is false', () => {
     const wrapper = mount(TextField, {
       props: { clearable: false },
     })
-    expect(wrapper.find('.text-field').attributes('data-clearable')).toBeUndefined()
+    expect(wrapper.find('.pr-text-field').attributes('data-clearable')).toBeUndefined()
   })
 
   it('applies disabled prop correctly', () => {
     const wrapper = mount(TextField, {
       props: { disabled: true },
     })
-    expect(wrapper.find('.text-field').attributes('data-disabled')).toBe('')
+    expect(wrapper.find('.pr-text-field').attributes('data-disabled')).toBe('')
     expect(wrapper.find('input').attributes('disabled')).toBe('')
   })
 
@@ -53,7 +53,7 @@ describe('TextField', () => {
     const wrapper = mount(TextField, {
       props: { disabled: false },
     })
-    expect(wrapper.find('.text-field').attributes('data-disabled')).toBeUndefined()
+    expect(wrapper.find('.pr-text-field').attributes('data-disabled')).toBeUndefined()
     expect(wrapper.find('input').attributes('disabled')).toBeUndefined()
   })
 
@@ -61,38 +61,38 @@ describe('TextField', () => {
     const wrapper = mount(TextField, {
       props: { modelValue: 'Hello' },
     })
-    expect(wrapper.find('.text-field').attributes('data-has-value')).toBe('')
+    expect(wrapper.find('.pr-text-field').attributes('data-has-value')).toBe('')
 
     await wrapper.setProps({ modelValue: '' })
-    expect(wrapper.find('.text-field').attributes('data-has-value')).toBeUndefined()
+    expect(wrapper.find('.pr-text-field').attributes('data-has-value')).toBeUndefined()
   })
 
   it('renders clear button when clearable is true and has value', () => {
     const wrapper = mount(TextField, {
       props: { clearable: true, modelValue: 'test' },
     })
-    expect(wrapper.find('.text-field__clear').exists()).toBe(true)
+    expect(wrapper.find('.pr-text-field__clear').exists()).toBe(true)
   })
 
   it('does not render clear button when clearable is false', () => {
     const wrapper = mount(TextField, {
       props: { clearable: false, modelValue: 'test' },
     })
-    expect(wrapper.find('.text-field__clear').exists()).toBe(false)
+    expect(wrapper.find('.pr-text-field__clear').exists()).toBe(false)
   })
 
   it('does not render clear button when value is empty', () => {
     const wrapper = mount(TextField, {
       props: { clearable: true, modelValue: '' },
     })
-    expect(wrapper.find('.text-field__clear').exists()).toBe(false)
+    expect(wrapper.find('.pr-text-field__clear').exists()).toBe(false)
   })
 
   it('does not render clear button when disabled', () => {
     const wrapper = mount(TextField, {
       props: { clearable: true, modelValue: 'test', disabled: true },
     })
-    expect(wrapper.find('.text-field__clear').exists()).toBe(false)
+    expect(wrapper.find('.pr-text-field__clear').exists()).toBe(false)
   })
 
   it('does not render clear button when readonly attribute is present', () => {
@@ -100,7 +100,7 @@ describe('TextField', () => {
       props: { clearable: true, modelValue: 'test' },
       attrs: { readonly: true },
     })
-    expect(wrapper.find('.text-field__clear').exists()).toBe(false)
+    expect(wrapper.find('.pr-text-field__clear').exists()).toBe(false)
   })
 
   it('emits update:modelValue on input', async () => {
@@ -115,7 +115,7 @@ describe('TextField', () => {
     const wrapper = mount(TextField, {
       props: { clearable: true, modelValue: 'test' },
     })
-    const clearButton = wrapper.find('.text-field__clear')
+    const clearButton = wrapper.find('.pr-text-field__clear')
     await clearButton.trigger('click')
     expect(wrapper.emitted('clear')).toHaveLength(1)
     expect(wrapper.emitted('update:modelValue')![0]).toEqual([''])

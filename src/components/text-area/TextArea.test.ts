@@ -9,13 +9,13 @@ describe('TextArea', () => {
     const textarea = wrapper.find('textarea')
     expect(textarea.exists()).toBe(true)
     expect(textarea.attributes('placeholder')).toBeUndefined()
-    expect(wrapper.find('.text-area').attributes('data-variant')).toBe('default')
-    expect(wrapper.find('.text-area').attributes('data-resizable')).toBe('')
-    expect(wrapper.find('.text-area').attributes('data-disabled')).toBeUndefined()
-    expect(wrapper.find('.text-area').attributes('data-has-value')).toBeUndefined()
-    expect(wrapper.find('.text-area').attributes('data-counter-visible')).toBeUndefined()
-    expect(wrapper.find('.text-area').attributes('data-counter-exceeded')).toBeUndefined()
-    expect(wrapper.find('.text-area__counter').exists()).toBe(false)
+    expect(wrapper.find('.pr-text-area').attributes('data-variant')).toBe('default')
+    expect(wrapper.find('.pr-text-area').attributes('data-resizable')).toBe('')
+    expect(wrapper.find('.pr-text-area').attributes('data-disabled')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area').attributes('data-has-value')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area').attributes('data-counter-visible')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area').attributes('data-counter-exceeded')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area__counter').exists()).toBe(false)
   })
 
   it('applies variant prop correctly', () => {
@@ -25,7 +25,7 @@ describe('TextArea', () => {
       const wrapper = mount(TextArea, {
         props: { variant },
       })
-      expect(wrapper.find('.text-area').attributes('data-variant')).toBe(variant)
+      expect(wrapper.find('.pr-text-area').attributes('data-variant')).toBe(variant)
     })
   })
 
@@ -33,19 +33,19 @@ describe('TextArea', () => {
     const wrapper = mount(TextArea, {
       props: { resizable: true },
     })
-    expect(wrapper.find('.text-area').attributes('data-resizable')).toBe('')
+    expect(wrapper.find('.pr-text-area').attributes('data-resizable')).toBe('')
 
     const wrapperNotResizable = mount(TextArea, {
       props: { resizable: false },
     })
-    expect(wrapperNotResizable.find('.text-area').attributes('data-resizable')).toBeUndefined()
+    expect(wrapperNotResizable.find('.pr-text-area').attributes('data-resizable')).toBeUndefined()
   })
 
   it('applies disabled prop correctly', () => {
     const wrapper = mount(TextArea, {
       props: { disabled: true },
     })
-    expect(wrapper.find('.text-area').attributes('data-disabled')).toBe('')
+    expect(wrapper.find('.pr-text-area').attributes('data-disabled')).toBe('')
     expect(wrapper.find('textarea').attributes('disabled')).toBe('')
   })
 
@@ -53,7 +53,7 @@ describe('TextArea', () => {
     const wrapper = mount(TextArea, {
       props: { disabled: false },
     })
-    expect(wrapper.find('.text-area').attributes('data-disabled')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area').attributes('data-disabled')).toBeUndefined()
     expect(wrapper.find('textarea').attributes('disabled')).toBeUndefined()
   })
 
@@ -61,50 +61,50 @@ describe('TextArea', () => {
     const wrapper = mount(TextArea, {
       props: { modelValue: 'Hello' },
     })
-    expect(wrapper.find('.text-area').attributes('data-has-value')).toBe('')
+    expect(wrapper.find('.pr-text-area').attributes('data-has-value')).toBe('')
 
     await wrapper.setProps({ modelValue: '' })
-    expect(wrapper.find('.text-area').attributes('data-has-value')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area').attributes('data-has-value')).toBeUndefined()
   })
 
   it('applies showCounter prop correctly', () => {
     const wrapper = mount(TextArea, {
       props: { showCounter: true },
     })
-    expect(wrapper.find('.text-area').attributes('data-counter-visible')).toBe('')
-    expect(wrapper.find('.text-area__counter').exists()).toBe(true)
+    expect(wrapper.find('.pr-text-area').attributes('data-counter-visible')).toBe('')
+    expect(wrapper.find('.pr-text-area__counter').exists()).toBe(true)
   })
 
   it('does not add data-counter-visible attribute when showCounter is false', () => {
     const wrapper = mount(TextArea, {
       props: { showCounter: false },
     })
-    expect(wrapper.find('.text-area').attributes('data-counter-visible')).toBeUndefined()
-    expect(wrapper.find('.text-area__counter').exists()).toBe(false)
+    expect(wrapper.find('.pr-text-area').attributes('data-counter-visible')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area__counter').exists()).toBe(false)
   })
 
   it('adds data-counter-exceeded attribute when length exceeds maxLength', async () => {
     const wrapper = mount(TextArea, {
       props: { maxLength: 5, modelValue: 'abcdef' },
     })
-    expect(wrapper.find('.text-area').attributes('data-counter-exceeded')).toBe('')
+    expect(wrapper.find('.pr-text-area').attributes('data-counter-exceeded')).toBe('')
 
     await wrapper.setProps({ modelValue: 'abc' })
-    expect(wrapper.find('.text-area').attributes('data-counter-exceeded')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area').attributes('data-counter-exceeded')).toBeUndefined()
   })
 
   it('does not add data-counter-exceeded attribute when maxLength is undefined', () => {
     const wrapper = mount(TextArea, {
       props: { maxLength: undefined, modelValue: 'abcdef' },
     })
-    expect(wrapper.find('.text-area').attributes('data-counter-exceeded')).toBeUndefined()
+    expect(wrapper.find('.pr-text-area').attributes('data-counter-exceeded')).toBeUndefined()
   })
 
   it('renders character counter with maxLength', () => {
     const wrapper = mount(TextArea, {
       props: { showCounter: true, maxLength: 10, modelValue: 'Hello' },
     })
-    const counter = wrapper.find('.text-area__counter')
+    const counter = wrapper.find('.pr-text-area__counter')
     expect(counter.exists()).toBe(true)
     expect(counter.text()).toContain('5')
     expect(counter.text()).toContain('/ 10')
@@ -114,7 +114,7 @@ describe('TextArea', () => {
     const wrapper = mount(TextArea, {
       props: { showCounter: true, modelValue: 'Hello World' },
     })
-    const counter = wrapper.find('.text-area__counter')
+    const counter = wrapper.find('.pr-text-area__counter')
     expect(counter.exists()).toBe(true)
     expect(counter.text()).toBe('11')
     expect(counter.text()).not.toContain('/')
