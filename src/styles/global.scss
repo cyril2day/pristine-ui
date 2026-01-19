@@ -1,7 +1,8 @@
 @use 'normalize.css';
 
 /* Project‑specific base styles */
-@use 'tokens/index';
+@use 'tokens';
+@use 'components';
 
 body {
   font-family: var(--font-family-sans);
