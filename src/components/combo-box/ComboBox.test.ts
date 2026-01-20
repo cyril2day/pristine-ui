@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ComboBox from './ComboBox.vue'
 
@@ -10,6 +10,10 @@ const sampleItems = [
 ]
 
 describe('ComboBox', () => {
+  beforeEach(() => {
+    HTMLElement.prototype.scrollIntoView = vi.fn()
+  })
+
   it('renders with default props', () => {
     const wrapper = mount(ComboBox)
     expect(wrapper.find('.pr-combo-box').exists()).toBe(true)
@@ -98,6 +102,7 @@ describe('ComboBox', () => {
     await wrapper.find('.pr-combo-box__toggle').trigger('click')
     expect(wrapper.emitted('close')).toHaveLength(1)
   })
+
 
   it('emits focus and blur events', async () => {
     const wrapper = mount(ComboBox)
