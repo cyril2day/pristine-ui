@@ -6,11 +6,13 @@ type Item = {
   id: string | number;
   label: string
 }
-import { computed, ref, watch, onMounted, onUnmounted } from 'vue'
-import { filter } from 'underscore'
-import { truthy, plucker, doWhen, executeIfHasField, clampIndex, cycleIndex, presenceAttr, classIf, when } from '@/utils'
+import { computed, ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
+import { filter, size, every } from 'underscore'
+import { truthy, plucker, doWhen, executeIfHasField, clampIndex, cycleIndex, presenceAttr, classIf, when, not, always } from '@/utils'
 import { equals, containsIgnoreCase, isNotEmpty, ifElse, safeProp, gt, lt, gte, createKeyHandler } from '@/utils/component-helpers'
 import IconCaret from '@/icons/icon-caret.vue'
+
+const isTruthy = <T>(val: T | null | undefined): val is NonNullable<T> => truthy(val)
 
 const props = withDefaults(
   defineProps<{
@@ -20,7 +22,7 @@ const props = withDefaults(
     placeholder?: string
   }>(),
   {
-    items: () => [],
+    items: always([]),
     variant: 'default',
     disabled: false,
     placeholder: '',
@@ -42,6 +44,7 @@ const isOpen = ref(false)
 const activeIndex = ref(-1)
 const inputRef = ref<HTMLInputElement | null>(null)
 const rootRef = ref<HTMLElement | null>(null)
+const listboxRef = ref<HTMLUListElement | null>(null)
 
 // Filtering logic using functional composition
 const getLabel = plucker('label')
@@ -59,9 +62,9 @@ const activeItem = computed(() => {
   const items = filteredItems.value
   const idx = activeIndex.value
   return ifElse(
-    () => gte(idx)(0) && lt(idx)(items.length),
+    () => gte(idx)(0) && lt(idx)(size(items)),
     () => items[idx],
-    () => null
+    always(null)
   )
 })
 
@@ -69,12 +72,66 @@ const activeItem = computed(() => {
 // Helper functions for template patterns
 const isOptionActive = (item: Item) => equals(item.id)(safeProp(activeItem.value, 'id'))
 const isSelected = (item: Item) => equals(item.label)(modelValue.value)
-const activeDescendantId = computed(() => when(truthy(activeItem.value), () => `option-${activeItem.value!.id}`))
+const activeDescendantId = computed(() => when(truthy(activeItemId.value), () => `option-${activeItemId.value}`))
+
+const activeItemId = computed(() => safeProp(activeItem.value, 'id'))
+const hasValueAttr = computed(() => when(gt(size(modelValue.value))(0), always('')))
+
+// Scroll‑to‑view helpers (local; candidate for extraction)
+const bothTruthy = <A, B>(
+  a: A | null | undefined,
+  b: B | null | undefined
+): [A, B] | undefined =>
+  when(
+    allOf(
+      () => isTruthy(a),
+      () => isTruthy(b)
+    ),
+    () => [a as A, b as B]
+  )
+
+const allOf = (
+  ...conditions: Array<() => boolean>
+): boolean =>
+  every(conditions, (cond) => cond())
+
+const getChildAt = (
+  container: HTMLElement | null | undefined,
+  index: number
+): HTMLElement | undefined => {
+  if (not(truthy(container))) return undefined
+  const c = container as HTMLElement
+  const children = c.children
+  const length = size(children)
+  return when(
+    allOf(
+      () => gte(index)(0),
+      () => lt(index)(length)
+    ),
+    () => children[index] as HTMLElement
+  )
+}
+
+const maybeScrollToActive = (): void => {
+  const maybePair = bothTruthy(
+    listboxRef.value,
+    getChildAt(listboxRef.value, activeIndex.value)
+  )
+
+  when(
+    truthy(maybePair),
+    () => {
+      const [, child] = maybePair as [HTMLElement, HTMLElement]
+      child.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  })
+}
 
 function openDropdown() {
-  doWhen(truthy(!props.disabled), () => {
-    isOpen.value = true
-    emit('open')
+  doWhen(
+    not(props.disabled),
+    () => {
+      isOpen.value = true
+      emit('open')
   })
 }
 
@@ -85,22 +142,32 @@ function closeDropdown() {
 }
 
 function toggleOpen() {
-  doWhen(truthy(!props.disabled), () => {
-    if (isOpen.value) {
-      closeDropdown()
-    } else {
-      openDropdown()
-    }
+  doWhen(
+    not(props.disabled),
+    () => {
+      ifElse(
+        () => isOpen.value,
+        closeDropdown,
+        openDropdown
+    )
   })
 }
 
 // Click‑outside handling
 onMounted(() => {
   const handleClickOutside = (event: MouseEvent) => {
-    if (!rootRef.value?.contains(event.target as Node) && isOpen.value) {
-      closeDropdown()
+    const isOpenFn = () => truthy(isOpen.value)
+    const isClickOutside = () => {
+      const container = rootRef.value
+      return truthy(container) && not((container as HTMLElement).contains(event.target as Node))
     }
+
+    when(
+      allOf(isOpenFn, isClickOutside),
+      closeDropdown
+    )
   }
+
   document.addEventListener('click', handleClickOutside)
   onUnmounted(() => document.removeEventListener('click', handleClickOutside))
 })
@@ -109,12 +176,24 @@ onMounted(() => {
 function onInput(event: Event) {
   const target = event.target as HTMLInputElement
   modelValue.value = target.value
-  when(truthy(!isOpen.value && gt(target.value.length)(0)), openDropdown)
+  const shouldOpen = allOf(
+    () => not(isOpen.value),
+    () => gt(size(target.value))(0)
+  )
+
+  when(
+    truthy(shouldOpen),
+    openDropdown
+  )
 }
 
 function onFocus(event: FocusEvent) {
   emit('focus', event)
-  doWhen(truthy(!props.disabled), openDropdown)
+
+  doWhen(
+    not(props.disabled),
+    openDropdown
+  )
 }
 
 function onBlur(event: FocusEvent) {
@@ -122,15 +201,18 @@ function onBlur(event: FocusEvent) {
 }
 
 function setActiveItem(item: Item | null) {
-  if (item === null) {
-    activeIndex.value = -1
-    return
-  }
-  const idx = filteredItems.value.findIndex((i: Item) => equals(item.id)(i.id))
-  activeIndex.value = ifElse(
-    () => gte(idx)(0),
-    () => idx,
-    () => -1
+  ifElse(
+    () => equals(item)(null),
+    () => { activeIndex.value = -1 },
+    () => {
+      const nonNullItem = item as Item
+      const idx = filteredItems.value.findIndex((i: Item) => equals(nonNullItem.id)(i.id))
+      activeIndex.value = ifElse(
+        () => gte(idx)(0),
+        () => idx,
+        always(-1)
+      )
+    }
   )
 }
 
@@ -143,44 +225,71 @@ function selectItem(item: Item) {
 
 // Keyboard navigation
 function onKeydown(event: KeyboardEvent) {
-  doWhen(truthy(!props.disabled), () => {
-    const items = filteredItems.value
-    const keyHandlers = createKeyHandler({
-      ArrowDown: (e: KeyboardEvent) => {
-        e.preventDefault()
-        doWhen(truthy(!isOpen.value), openDropdown)
-        when(truthy(isNotEmpty(items)), () => {
-          const current = activeIndex.value
-          const next = cycleIndex(current, 1, items.length)
-          activeIndex.value = next
-        })
-      },
-      ArrowUp: (e: KeyboardEvent) => {
-        e.preventDefault()
-        doWhen(truthy(!isOpen.value), openDropdown)
-        when(truthy(isNotEmpty(items)), () => {
-          if (equals(activeIndex.value)(-1)) {
-            activeIndex.value = items.length - 1
-          } else {
-            const next = cycleIndex(activeIndex.value, -1, items.length)
-            activeIndex.value = next
-          }
-        })
-      },
-      Enter: (e: KeyboardEvent) => {
-        when(truthy(activeItem.value), () => {
+  doWhen(
+    not(props.disabled),
+    () => {
+      const items = filteredItems.value
+      const keyHandlers = createKeyHandler({
+
+        ArrowDown: (e: KeyboardEvent) => {
           e.preventDefault()
-          selectItem(activeItem.value!)
-        })
-      },
-      Escape: (e: KeyboardEvent) => {
-        when(truthy(isOpen.value), () => {
+
+          doWhen(
+            not(isOpen.value),
+            openDropdown
+          )
+
+          when(
+            truthy(isNotEmpty(items)),
+            () => {
+              const current = activeIndex.value
+              const next = cycleIndex(current, 1, size(items))
+              activeIndex.value = next
+            }
+          )
+        },
+        ArrowUp: (e: KeyboardEvent) => {
           e.preventDefault()
-          closeDropdown()
-        })
-      },
-      Tab: closeDropdown,
-      Shift: closeDropdown,
+
+          doWhen(
+            not(isOpen.value),
+            openDropdown
+          )
+
+          when(
+            truthy(isNotEmpty(items)),
+            () => {
+              const next = ifElse(
+                () => equals(activeIndex.value)(-1),
+                () => size(items) - 1,
+                () => cycleIndex(activeIndex.value, -1, size(items))
+              )
+              activeIndex.value = next
+            }
+          )
+        },
+        Enter: (e: KeyboardEvent) => {
+          const item = activeItem.value
+
+          when(
+            isTruthy(item),
+            () => {
+              e.preventDefault()
+              selectItem(item as Item)
+            }
+          )
+        },
+        Escape: (e: KeyboardEvent) => {
+          when(
+            truthy(isOpen.value),
+            () => {
+              e.preventDefault()
+              closeDropdown()
+            }
+          )
+        },
+        Tab: closeDropdown,
+        Shift: closeDropdown,
     }, { preventDefault: false })
     keyHandlers(event)
   })
@@ -192,22 +301,53 @@ function computeNewActiveIndex(
   currentIndex: number,
   newItems: Item[]
 ): number {
-  if (currentId && !newItems.some((item: Item) => equals(currentId)(item.id))) {
-    // active item no longer in list, reset to first item (or -1)
-    return ifElse(
+  const hasItem = () => newItems.some((item: Item) => equals(currentId)(item.id))
+  const itemMissing = allOf(
+    () => truthy(currentId),
+    () => not(hasItem())
+  )
+
+  return ifElse(
+    () => itemMissing,
+    () => ifElse(
       () => isNotEmpty(newItems),
-      () => 0,
-      () => -1
-    )
-  }
-  // clamp index to new length
-  return clampIndex(currentIndex, newItems.length)
+      always(0),
+      always(-1)
+    ),
+    () => clampIndex(currentIndex, size(newItems))
+  )
 }
 
 watch(filteredItems, (newItems) => {
-  const currentId = activeItem.value?.id
+  const currentId = safeProp(activeItem.value, 'id')
   activeIndex.value = computeNewActiveIndex(currentId, activeIndex.value, newItems)
 })
+
+// Scroll active option into view when index changes or dropdown opens
+watch(
+  () => activeIndex.value,
+  () => {
+    when(
+      truthy(isOpen.value),
+      () => {
+        nextTick(maybeScrollToActive)
+      }
+    )
+  },
+  { flush: 'post' }
+)
+
+watch(
+  () => isOpen.value,
+  (newVal) => {
+    when(
+      truthy(newVal),
+      () => {
+        nextTick(maybeScrollToActive)
+      }
+    )
+  }
+)
 </script>
 
 <template>
@@ -217,7 +357,7 @@ watch(filteredItems, (newItems) => {
     :data-variant="variant"
     :data-expanded="presenceAttr(isOpen)"
     :data-disabled="presenceAttr(disabled)"
-    :data-has-value="presenceAttr(!!modelValue)"
+    :data-has-value="hasValueAttr"
   >
     <input
       ref="inputRef"
@@ -248,6 +388,7 @@ watch(filteredItems, (newItems) => {
     <ul
       v-if="isOpen && isNotEmpty(filteredItems)"
       id="listbox-id"
+      ref="listboxRef"
       class="pr-combo-box__listbox"
       role="listbox"
       aria-label="Options"
