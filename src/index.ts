@@ -10,6 +10,7 @@ export { default as TextArea } from '@/components/text-area/TextArea.vue'
 export { default as TextField } from '@/components/text-field/TextField.vue'
 
 // Import global styles (CSS custom properties, component styles, normalize.css)
+import 'pristine-styles'
 import '@/styles/global.scss'
 
 // Export utility functions

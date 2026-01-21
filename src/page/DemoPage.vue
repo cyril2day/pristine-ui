@@ -147,6 +147,29 @@ watch(isDark, (isNowDark) => {
           </div>
         </CardDisplay>
 
+    <!-- CardDisplay Card -->
+        <CardDisplay variant="outlined">
+          <h2 class="card-title">CardDisplay</h2>
+          <p class="card-description">Apple‑inspired card container with outlined and elevated variants.</p>
+          <div class="card-examples">
+            <div class="example">
+              <h3>Outlined variant</h3>
+              <CardDisplay variant="outlined">
+                <h4>Outlined Card</h4>
+                <p>This card has a subtle border.</p>
+              </CardDisplay>
+            </div>
+            <div class="example">
+              <h3>Elevated variant</h3>
+              <CardDisplay variant="elevated">
+                <h4>Elevated Card</h4>
+                <p>This card has a subtle shadow that increases on hover.</p>
+              </CardDisplay>
+            </div>
+          </div>
+        </CardDisplay>
+
+
         <!-- SwitchToggle Card -->
         <CardDisplay variant="outlined">
           <h2 class="card-title">SwitchToggle</h2>
@@ -205,64 +228,35 @@ watch(isDark, (isNowDark) => {
             </div>
           </div>
         </CardDisplay>
-        <!-- TextArea Card -->
+
+ <!-- ComboBox Card -->
         <CardDisplay variant="outlined">
-          <h2 class="card-title">TextArea</h2>
-          <p class="card-description">Apple‑inspired textarea with variants, resizable control, and character counter.</p>
+          <h2 class="card-title">ComboBox</h2>
+          <p class="card-description">Apple‑inspired combobox with filtering and keyboard navigation.</p>
           <div class="card-examples">
             <div class="example">
               <h3>Default variant</h3>
-              <TextArea v-model="textareaValue" placeholder="Type something..." />
-              <p class="example-state">Value: {{ textareaValue }}</p>
+              <ComboBox v-model="comboValue" :items="comboItems" placeholder="Select a fruit..." />
+              <p class="example-state">Selected: {{ comboValue }}</p>
             </div>
             <div class="example">
               <h3>Filled variant</h3>
-              <TextArea v-model="textareaValue2" variant="filled" />
-              <p class="example-state">Value: {{ textareaValue2 }}</p>
-            </div>
-            <div class="example">
-              <h3>With character counter</h3>
-              <TextArea v-model="textareaValue" :max-length="maxLength" :show-counter="true" />
-              <p class="example-state">Length: {{ textareaValue.length }} / {{ maxLength }}</p>
+              <ComboBox v-model="comboValue" :items="comboItems" variant="filled" placeholder="Select a fruit..." />
+              <p class="example-state">Selected: {{ comboValue }}</p>
             </div>
             <div class="example">
               <h3>Disabled</h3>
-              <TextArea disabled placeholder="Cannot edit" />
+              <ComboBox disabled placeholder="Disabled" :items="comboItems" />
             </div>
             <div class="example">
-              <h3>Resizable toggle</h3>
-              <SwitchToggle v-model="resizable" />
-              <TextArea :resizable="resizable" placeholder="Try resizing..." />
-            </div>
-            <div class="example">
-              <h3>Show counter toggle</h3>
-              <SwitchToggle v-model="showCounter" />
-              <TextArea :show-counter="showCounter" :max-length="maxLength" placeholder="Type to see counter" />
+              <h3>With initial value</h3>
+              <ComboBox v-model="comboValue" :items="comboItems" placeholder="Select a fruit..." />
+              <p class="example-state">Selected: {{ comboValue }}</p>
             </div>
           </div>
         </CardDisplay>
 
-        <!-- CardDisplay Card -->
-        <CardDisplay variant="outlined">
-          <h2 class="card-title">CardDisplay</h2>
-          <p class="card-description">Apple‑inspired card container with outlined and elevated variants.</p>
-          <div class="card-examples">
-            <div class="example">
-              <h3>Outlined variant</h3>
-              <CardDisplay variant="outlined">
-                <h4>Outlined Card</h4>
-                <p>This card has a subtle border.</p>
-              </CardDisplay>
-            </div>
-            <div class="example">
-              <h3>Elevated variant</h3>
-              <CardDisplay variant="elevated">
-                <h4>Elevated Card</h4>
-                <p>This card has a subtle shadow that increases on hover.</p>
-              </CardDisplay>
-            </div>
-          </div>
-        </CardDisplay>
+
         <!-- CheckBox Card -->
         <CardDisplay variant="outlined">
           <h2 class="card-title">CheckBox</h2>
@@ -325,32 +319,6 @@ watch(isDark, (isNowDark) => {
           </div>
         </CardDisplay>
 
-        <!-- ComboBox Card -->
-        <CardDisplay variant="outlined">
-          <h2 class="card-title">ComboBox</h2>
-          <p class="card-description">Apple‑inspired combobox with filtering and keyboard navigation.</p>
-          <div class="card-examples">
-            <div class="example">
-              <h3>Default variant</h3>
-              <ComboBox v-model="comboValue" :items="comboItems" placeholder="Select a fruit..." />
-              <p class="example-state">Selected: {{ comboValue }}</p>
-            </div>
-            <div class="example">
-              <h3>Filled variant</h3>
-              <ComboBox v-model="comboValue" :items="comboItems" variant="filled" placeholder="Select a fruit..." />
-              <p class="example-state">Selected: {{ comboValue }}</p>
-            </div>
-            <div class="example">
-              <h3>Disabled</h3>
-              <ComboBox disabled placeholder="Disabled" :items="comboItems" />
-            </div>
-            <div class="example">
-              <h3>With initial value</h3>
-              <ComboBox v-model="comboValue" :items="comboItems" placeholder="Select a fruit..." />
-              <p class="example-state">Selected: {{ comboValue }}</p>
-            </div>
-          </div>
-        </CardDisplay>
 
         <!-- SegmentedControl Card -->
         <CardDisplay variant="outlined">
@@ -379,13 +347,54 @@ watch(isDark, (isNowDark) => {
             </div>
           </div>
         </CardDisplay>
+
+  <!-- TextArea Card -->
+        <CardDisplay variant="outlined">
+          <h2 class="card-title">TextArea</h2>
+          <p class="card-description">Apple‑inspired textarea with variants, resizable control, and character counter.</p>
+          <div class="card-examples">
+            <div class="example">
+              <h3>Default variant</h3>
+              <TextArea v-model="textareaValue" placeholder="Type something..." />
+              <p class="example-state">Value: {{ textareaValue }}</p>
+            </div>
+            <div class="example">
+              <h3>Filled variant</h3>
+              <TextArea v-model="textareaValue2" variant="filled" />
+              <p class="example-state">Value: {{ textareaValue2 }}</p>
+            </div>
+            <div class="example">
+              <h3>With character counter</h3>
+              <TextArea v-model="textareaValue" :max-length="maxLength" :show-counter="true" />
+              <p class="example-state">Length: {{ textareaValue.length }} / {{ maxLength }}</p>
+            </div>
+            <div class="example">
+              <h3>Disabled</h3>
+              <TextArea disabled placeholder="Cannot edit" />
+            </div>
+            <div class="example">
+              <h3>Resizable toggle</h3>
+              <SwitchToggle v-model="resizable" />
+              <TextArea :resizable="resizable" placeholder="Try resizing..." />
+            </div>
+            <div class="example">
+              <h3>Show counter toggle</h3>
+              <SwitchToggle v-model="showCounter" />
+              <TextArea :show-counter="showCounter" :max-length="maxLength" placeholder="Type to see counter" />
+            </div>
+          </div>
+        </CardDisplay>
+
+
+
+
       </div>
     </main>
   </div>
 </template>
 
 <style scoped lang="scss">
-@use '@/styles/tokens/index' as tokens;
+@use '@/styles/mixins' as tokens;
 
 .demo-page {
   min-height: 100vh;

@@ -6,13 +6,11 @@ type Item = {
   id: string | number;
   label: string
 }
-import { computed, ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
-import { filter, size, every } from 'underscore'
-import { truthy, plucker, doWhen, executeIfHasField, clampIndex, cycleIndex, presenceAttr, classIf, when, not, always } from '@/utils'
-import { equals, containsIgnoreCase, isNotEmpty, ifElse, safeProp, gt, lt, gte, createKeyHandler } from '@/utils/component-helpers'
+import { useComboBoxState } from './composables/useComboBoxState'
 import IconCaret from '@/icons/icon-caret.vue'
-
-const isTruthy = <T>(val: T | null | undefined): val is NonNullable<T> => truthy(val)
+import ComboBoxListbox from './ComboBoxListbox.vue'
+import { always } from '@/utils'
+import { presenceAttr, isNotEmpty } from '@/utils/component-helpers'
 
 const props = withDefaults(
   defineProps<{
@@ -39,315 +37,22 @@ const emit = defineEmits<{
   blur: [event: FocusEvent]
 }>()
 
-// Internal reactive state
-const isOpen = ref(false)
-const activeIndex = ref(-1)
-const inputRef = ref<HTMLInputElement | null>(null)
-const rootRef = ref<HTMLElement | null>(null)
-const listboxRef = ref<HTMLUListElement | null>(null)
-
-// Filtering logic using functional composition
-const getLabel = plucker('label')
-const matchesInput = (input: string) => (item: Item) =>
-  containsIgnoreCase(input)(getLabel(item))
-const filteredItems = computed(() =>
-  ifElse(
-    () => truthy(modelValue.value),
-    () => filter(props.items, matchesInput(modelValue.value)),
-    () => props.items
-  )
-)
-
-const activeItem = computed(() => {
-  const items = filteredItems.value
-  const idx = activeIndex.value
-  return ifElse(
-    () => gte(idx)(0) && lt(idx)(size(items)),
-    () => items[idx],
-    always(null)
-  )
-})
-
-// Open/close dropdown
-// Helper functions for template patterns
-const isOptionActive = (item: Item) => equals(item.id)(safeProp(activeItem.value, 'id'))
-const isSelected = (item: Item) => equals(item.label)(modelValue.value)
-const activeDescendantId = computed(() => when(truthy(activeItemId.value), () => `option-${activeItemId.value}`))
-
-const activeItemId = computed(() => safeProp(activeItem.value, 'id'))
-const hasValueAttr = computed(() => when(gt(size(modelValue.value))(0), always('')))
-
-// Scroll‑to‑view helpers (local; candidate for extraction)
-const bothTruthy = <A, B>(
-  a: A | null | undefined,
-  b: B | null | undefined
-): [A, B] | undefined =>
-  when(
-    allOf(
-      () => isTruthy(a),
-      () => isTruthy(b)
-    ),
-    () => [a as A, b as B]
-  )
-
-const allOf = (
-  ...conditions: Array<() => boolean>
-): boolean =>
-  every(conditions, (cond) => cond())
-
-const getChildAt = (
-  container: HTMLElement | null | undefined,
-  index: number
-): HTMLElement | undefined => {
-  if (not(truthy(container))) return undefined
-  const c = container as HTMLElement
-  const children = c.children
-  const length = size(children)
-  return when(
-    allOf(
-      () => gte(index)(0),
-      () => lt(index)(length)
-    ),
-    () => children[index] as HTMLElement
-  )
-}
-
-const maybeScrollToActive = (): void => {
-  const maybePair = bothTruthy(
-    listboxRef.value,
-    getChildAt(listboxRef.value, activeIndex.value)
-  )
-
-  when(
-    truthy(maybePair),
-    () => {
-      const [, child] = maybePair as [HTMLElement, HTMLElement]
-      child.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
-  })
-}
-
-function openDropdown() {
-  doWhen(
-    not(props.disabled),
-    () => {
-      isOpen.value = true
-      emit('open')
-  })
-}
-
-function closeDropdown() {
-  isOpen.value = false
-  activeIndex.value = -1
-  emit('close')
-}
-
-function toggleOpen() {
-  doWhen(
-    not(props.disabled),
-    () => {
-      ifElse(
-        () => isOpen.value,
-        closeDropdown,
-        openDropdown
-    )
-  })
-}
-
-// Click‑outside handling
-onMounted(() => {
-  const handleClickOutside = (event: MouseEvent) => {
-    const isOpenFn = () => truthy(isOpen.value)
-    const isClickOutside = () => {
-      const container = rootRef.value
-      return truthy(container) && not((container as HTMLElement).contains(event.target as Node))
-    }
-
-    when(
-      allOf(isOpenFn, isClickOutside),
-      closeDropdown
-    )
-  }
-
-  document.addEventListener('click', handleClickOutside)
-  onUnmounted(() => document.removeEventListener('click', handleClickOutside))
-})
-
-// Input handlers
-function onInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  modelValue.value = target.value
-  const shouldOpen = allOf(
-    () => not(isOpen.value),
-    () => gt(size(target.value))(0)
-  )
-
-  when(
-    truthy(shouldOpen),
-    openDropdown
-  )
-}
-
-function onFocus(event: FocusEvent) {
-  emit('focus', event)
-
-  doWhen(
-    not(props.disabled),
-    openDropdown
-  )
-}
-
-function onBlur(event: FocusEvent) {
-  emit('blur', event)
-}
-
-function setActiveItem(item: Item | null) {
-  ifElse(
-    () => equals(item)(null),
-    () => { activeIndex.value = -1 },
-    () => {
-      const nonNullItem = item as Item
-      const idx = filteredItems.value.findIndex((i: Item) => equals(nonNullItem.id)(i.id))
-      activeIndex.value = ifElse(
-        () => gte(idx)(0),
-        () => idx,
-        always(-1)
-      )
-    }
-  )
-}
-
-function selectItem(item: Item) {
-  modelValue.value = item.label
-  emit('select', item)
-  executeIfHasField(inputRef.value, 'focus')
-  closeDropdown()
-}
-
-// Keyboard navigation
-function onKeydown(event: KeyboardEvent) {
-  doWhen(
-    not(props.disabled),
-    () => {
-      const items = filteredItems.value
-      const keyHandlers = createKeyHandler({
-
-        ArrowDown: (e: KeyboardEvent) => {
-          e.preventDefault()
-
-          doWhen(
-            not(isOpen.value),
-            openDropdown
-          )
-
-          when(
-            truthy(isNotEmpty(items)),
-            () => {
-              const current = activeIndex.value
-              const next = cycleIndex(current, 1, size(items))
-              activeIndex.value = next
-            }
-          )
-        },
-        ArrowUp: (e: KeyboardEvent) => {
-          e.preventDefault()
-
-          doWhen(
-            not(isOpen.value),
-            openDropdown
-          )
-
-          when(
-            truthy(isNotEmpty(items)),
-            () => {
-              const next = ifElse(
-                () => equals(activeIndex.value)(-1),
-                () => size(items) - 1,
-                () => cycleIndex(activeIndex.value, -1, size(items))
-              )
-              activeIndex.value = next
-            }
-          )
-        },
-        Enter: (e: KeyboardEvent) => {
-          const item = activeItem.value
-
-          when(
-            isTruthy(item),
-            () => {
-              e.preventDefault()
-              selectItem(item as Item)
-            }
-          )
-        },
-        Escape: (e: KeyboardEvent) => {
-          when(
-            truthy(isOpen.value),
-            () => {
-              e.preventDefault()
-              closeDropdown()
-            }
-          )
-        },
-        Tab: closeDropdown,
-        Shift: closeDropdown,
-    }, { preventDefault: false })
-    keyHandlers(event)
-  })
-}
-
-// Watch modelValue to reset active item when filtered list changes
-function computeNewActiveIndex(
-  currentId: string | number | undefined,
-  currentIndex: number,
-  newItems: Item[]
-): number {
-  const hasItem = () => newItems.some((item: Item) => equals(currentId)(item.id))
-  const itemMissing = allOf(
-    () => truthy(currentId),
-    () => not(hasItem())
-  )
-
-  return ifElse(
-    () => itemMissing,
-    () => ifElse(
-      () => isNotEmpty(newItems),
-      always(0),
-      always(-1)
-    ),
-    () => clampIndex(currentIndex, size(newItems))
-  )
-}
-
-watch(filteredItems, (newItems) => {
-  const currentId = safeProp(activeItem.value, 'id')
-  activeIndex.value = computeNewActiveIndex(currentId, activeIndex.value, newItems)
-})
-
-// Scroll active option into view when index changes or dropdown opens
-watch(
-  () => activeIndex.value,
-  () => {
-    when(
-      truthy(isOpen.value),
-      () => {
-        nextTick(maybeScrollToActive)
-      }
-    )
-  },
-  { flush: 'post' }
-)
-
-watch(
-  () => isOpen.value,
-  (newVal) => {
-    when(
-      truthy(newVal),
-      () => {
-        nextTick(maybeScrollToActive)
-      }
-    )
-  }
-)
+const {
+  isOpen,
+  inputRef,
+  rootRef,
+  filteredItems,
+  activeDescendantId,
+  activeItemId,
+  hasValueAttr,
+  toggleOpen,
+  onInput,
+  onFocus,
+  onBlur,
+  onKeydown,
+  selectItem,
+  setActiveItem,
+} = useComboBoxState(props, modelValue, emit)
 </script>
 
 <template>
@@ -385,27 +90,256 @@ watch(
     >
       <IconCaret color="var(--color-combobox-caret)" :size="10" />
     </button>
-    <ul
+    <ComboBoxListbox
       v-if="isOpen && isNotEmpty(filteredItems)"
-      id="listbox-id"
-      ref="listboxRef"
-      class="pr-combo-box__listbox"
-      role="listbox"
-      aria-label="Options"
-    >
-      <li
-        v-for="(item) in filteredItems"
-        :key="item.id"
-        :id="`option-${item.id}`"
-        class="pr-combo-box__option"
-        :class="classIf(isOptionActive(item), 'pr-combo-box__option--active')"
-        @click="selectItem(item)"
-        @mouseenter="setActiveItem(item)"
-        role="option"
-        :aria-selected="isSelected(item)"
-      >
-        {{ item.label }}
-      </li>
-    </ul>
+      :id="'listbox-id'"
+      :items="filteredItems"
+      :active-item-id="activeItemId"
+      :aria-label="'Options'"
+      @select="selectItem"
+      @hover="setActiveItem"
+    />
   </div>
 </template>
+
+<style lang="scss">
+@use '@/styles/mixins' as mixins;
+
+:root {
+  --color-combobox-caret: hsla(0, 0%, 0%, 0.65);
+}
+
+.dark {
+  --color-combobox-caret: hsla(0, 0%, 100%, 0.65);
+}
+
+.pr-combo-box {
+
+  // Display
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+
+  // Box Model
+  box-sizing: border-box;
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: var(--border-width-2) solid transparent;
+  background: transparent;
+  padding: var(--space-2) var(--space-2);
+
+  // Colors & Typography
+  color: var(--text-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--text-base);
+  line-height: var(--line-height-normal);
+
+  // Other
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  // Variant: default (outlined)
+  &[data-variant="default"] {
+    border-color: var(--color-gray);
+
+    &:focus-within {
+      border-color: var(--color-blue);
+      box-shadow: var(--color-blue) 0 0 0 var(--border-width-3);
+    }
+  }
+
+  // Variant: filled (solid background)
+  &[data-variant="filled"] {
+    border-color: transparent;
+    background-color: var(--color-gray5);
+
+    &:focus-within {
+      background-color: var(--background-color);
+      box-shadow: inset 0 0 0 1px var(--color-blue),
+                  0 0 0 2px color-mix(in srgb, var(--color-blue) 10%, transparent);
+    }
+  }
+
+  // Disabled state
+  &[data-disabled] {
+    opacity: var(--opacity-50);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// Input element
+.pr-combo-box__input {
+  // Display
+  flex: 1;
+  width: 100%;
+
+  // Box Model
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+
+  // Colors & Typography
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+
+  // Other
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  // Focus outline for accessibility (keyboard focus)
+  &:focus-visible {
+    outline: var(--border-width-2) solid var(--color-blue);
+    outline-offset: var(--space-2);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// Toggle button
+.pr-combo-box__toggle {
+  // Display
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  // Positioning
+  position: absolute;
+  right: var(--space-3);
+
+  // Box Model
+  width: 1.7rem;
+  height: 1.7rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0;
+  margin: 0;
+
+  // Colors & Typography
+  color: var(--text-secondary);
+  background-color: transparent;
+  font-size: var(--text-sm);
+  line-height: 1;
+
+  // Other
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+
+  &:hover,
+  &:focus {
+    color: var(--text-primary);
+    background-color: var(--color-gray4);
+  }
+
+  &:active {
+    background-color: var(--color-gray3);
+  }
+}
+
+.pr-combo-box[data-expanded] .pr-combo-box__toggle {
+  transform: rotate(180deg);
+}
+
+// Dropdown listbox
+.pr-combo-box__listbox {
+  // Display
+  display: block;
+  position: absolute;
+  z-index: var(--z-index-dropdown);
+
+  // Positioning
+  top: 100%;
+  left: 0;
+  right: 0;
+
+  // Box Model
+  margin: var(--space-2) 0 0;
+  padding: var(--space-2) 0;
+  border-radius: var(--radius-md);
+  border: var(--border-width-1) solid var(--color-gray);
+  // background: var(--color-gray6);
+  background: transparent;
+  backdrop-filter: saturate(180%) blur(200px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  // Colors & Typography
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+
+  // Other
+  list-style: none;
+  max-height: 200px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    border: 3px solid transparent;
+    background-color: var(--color-gray4);
+  }
+}
+
+// Option items
+.pr-combo-box__option  {
+  // Display
+  display: block;
+
+  // Box Model
+  padding: var(--space-2) var(--space-3);
+  margin: 0;
+
+  // Colors & Typography
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+
+  // Other
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &.pr-combo-box__option--active {
+    background-color: var(--color-gray5);
+  }
+
+  &[aria-selected="true"] {
+    background-color: var(--color-blue);
+    color: var(--color-white);
+  }
+}
+
+// Responsive adjustments
+@include mixins.respond-to(small-phone) {
+  .pr-combo-box {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-sm);
+
+    .pr-combo-box__toggle {
+      right: var(--space-2);
+      width: 1rem;
+      height: 1rem;
+      font-size: var(--text-xs);
+    }
+
+    .pr-combo-box__listbox {
+      max-height: 150px;
+    }
+  }
+}
+</style>
