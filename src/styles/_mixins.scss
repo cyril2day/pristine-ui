@@ -1,0 +1,44 @@
+$breakpoint-small-phone: 480px;
+$breakpoint-phone-tablet-transition: 767px;
+$breakpoint-small-tablet: 1023px;
+$breakpoint-tablet-desktop-transition: 1068px;
+$breakpoint-small-desktop: 1250px;
+
+// -----------------------------------------------------------------------------
+// Media Query Mixin
+// -----------------------------------------------------------------------------
+// Example usage:
+//   @include respond-to(small-phone) { ... }
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == small-phone {
+    @media (max-width: $breakpoint-small-phone) { @content; }
+  }
+  @else if $breakpoint == phone-tablet-transition {
+    @media (max-width: $breakpoint-phone-tablet-transition) { @content; }
+  }
+  @else if $breakpoint == small-tablet {
+    @media (max-width: $breakpoint-small-tablet) { @content; }
+  }
+  @else if $breakpoint == tablet-desktop-transition {
+    @media (max-width: $breakpoint-tablet-desktop-transition) { @content; }
+  }
+  @else if $breakpoint == small-desktop {
+    @media (max-width: $breakpoint-small-desktop) { @content; }
+  }
+  @else {
+    @error "Unknown breakpoint `#{$breakpoint}`. Available breakpoints: small-phone, phone-tablet-transition, small-tablet, tablet-desktop-transition, small-desktop.";
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Breakpoint Map (for programmatic iteration)
+// -----------------------------------------------------------------------------
+
+$breakpoints: (
+  small-phone: $breakpoint-small-phone,
+  phone-tablet-transition: $breakpoint-phone-tablet-transition,
+  small-tablet: $breakpoint-small-tablet,
+  tablet-desktop-transition: $breakpoint-tablet-desktop-transition,
+  small-desktop: $breakpoint-small-desktop,
+) !default;
