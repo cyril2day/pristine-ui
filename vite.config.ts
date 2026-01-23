@@ -4,6 +4,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
+import { equals, when } from 'pristine-fp'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -26,6 +27,16 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url))
       },
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: when(
+            equals(mode)('development'),
+            () => `@use "pristine-styles";`
+          )
+        }
+      }
     },
     server: {
       host: true
