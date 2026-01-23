@@ -6,14 +6,14 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?style=flat-square&logo=typescript)
 ![Vite](https://img.shields.io/badge/Vite-7.3-646cff?style=flat-square&logo=vite)
 
-A collection of reusable, Apple‑inspired Vue 3 UI components built with TypeScript and Sass. Designed for developers who value clean design, accessibility, and a straightforward developer experience.
+A collection of reusable, clean‑design Vue 3 UI components built with TypeScript and Sass. Designed for developers who value clean design, accessibility, and a straightforward developer experience.
 
 ## Features
 
 - **Vue 3** – Composition API and `<script setup>` syntax
 - **TypeScript** – Fully typed components and utilities
 - **Design Tokens** – Consistent spacing, colors, typography via CSS custom properties
-- **Apple‑inspired** – Subtle shadows, rounded corners, familiar interactions
+- **Clean design** – Subtle shadows, rounded corners, familiar interactions
 - **Accessible** – WAI ARIA attributes, keyboard navigation, focus management
 - **Tree‑shakeable** – ES module exports with side‑effect‑free JavaScript
 - **CSS‑variable based theming** – Light/dark theme support via CSS custom properties
@@ -21,13 +21,13 @@ A collection of reusable, Apple‑inspired Vue 3 UI components built with TypeSc
 ## Components
 
 - `CardDisplay` – Outlined and elevated card containers
-- `CheckBox` – Apple‑style checkbox with tri‑state (checked/unchecked/indeterminate)
+- `CheckBox` – Clean checkbox with tri‑state (checked/unchecked/indeterminate)
 - `ComboBox` – Filterable dropdown with keyboard navigation
 - `PushButton` – Button with role variants (normal, primary, destructive, cancel)
 - `SegmentedControl` – Capsule or rounded‑rectangle segmented control
-- `SwitchToggle` – Apple‑inspired toggle switch
+- `SwitchToggle` – Clean toggle switch with smooth animation
 - `TextArea` – Resizable textarea with character counter
-- `TextField` – Apple‑style text field with clearable support
+- `TextField` – Clean text field with clearable support
 
 ## Installation
 
@@ -41,11 +41,13 @@ yarn add @cyril2day2/pristine-ui
 
 ## Peer Dependencies
 
-Pristine UI expects `vue` (^3.5.26) and `normalize.css` (^8.0.1) to be installed in your project. If you haven’t added them yet:
+Pristine UI expects `vue` (^3.5.26), `normalize.css` (^8.0.1) and `pristine‑styles` (^0.1.0) to be installed in your project. If you haven’t added them yet:
 
 ```bash
-npm install vue normalize.css
+npm install vue normalize.css pristine-styles
 ```
+
+**Note:** `pristine‑styles` already includes `normalize.css` as a dependency, so installing `pristine‑styles` will automatically satisfy the `normalize.css` requirement. However, listing both keeps the dependency explicit.
 
 ## Usage
 
@@ -78,17 +80,35 @@ After registering the plugin, all components become available globally without e
 
 ### Include Default Styles
 
-Components rely on CSS custom properties (design tokens) for colors, spacing, etc. To get the default Apple‑inspired appearance, import the provided CSS file:
+Components rely on CSS custom properties (design tokens) for colors, spacing, etc. **The design tokens are required**—without them, components will have virtually no styling (colors, spacing, typography, etc.). To get the expected appearance, you must import both the component styles and the design tokens.
 
-```js
-import '@cyril2day2/pristine-ui/dist/style.css'
-```
+1. **Install the design tokens package** (if you haven’t already):
 
-If you prefer to provide your own design tokens, you may omit this import. Components will still work but will fall back to browser defaults for colors and spacing.
+   ```bash
+   npm install pristine-styles
+   ```
+
+2. **Import the design tokens** in your main CSS/SCSS file:
+
+   ```css
+   @import 'pristine-styles';
+   ```
+   or in SCSS:
+   ```scss
+   @use 'pristine-styles';
+   ```
+
+3. **Import the component styles** from the library:
+
+   ```js
+   import '@cyril2day2/pristine-ui/dist/style.css';
+   ```
+
+If you wish to customize the design tokens, you can override any CSS custom property after importing `pristine‑styles`. For advanced customization, you may replace `pristine‑styles` entirely with your own token system, provided you define the same set of CSS custom properties.
 
 ## Theming
 
-Pristine UI supports light/dark themes via CSS custom properties. The token file includes automatic theme detection via `prefers-color-scheme` and a manual `.dark` class toggle.
+Pristine UI supports light/dark themes via CSS custom properties. The token file (provided by the `pristine‑styles` package) includes automatic theme detection via `prefers-color-scheme` and a manual `.dark` class toggle.
 
 ### Using OS Preference
 
@@ -115,6 +135,25 @@ Override any token by re‑defining the corresponding CSS custom property in you
   /* … */
 }
 ```
+
+## Styling Approach
+
+Pristine UI separates **component styles** (layout, component‑specific CSS) from **design tokens** (colors, spacing, typography, etc.). This separation gives you full control over the visual design while keeping the component logic independent.
+
+- **Component styles** are bundled in `@cyril2day2/pristine-ui/dist/style.css`. They define how components are laid out and interact, but they reference design tokens for all color, spacing, and typography values.
+- **Design tokens** are provided by the `pristine‑styles` package. They are a set of CSS custom properties (variables) that you can override in your own stylesheet.
+
+To customize the appearance, simply re‑define any token in your CSS:
+
+```css
+:root {
+  --color-blue: #0a84ff;
+  --space-4: 1rem;
+  /* … override any token defined in pristine‑styles */
+}
+```
+
+Because tokens are decoupled, you can even replace `pristine‑styles` entirely with your own token system, as long as you define the same set of CSS custom properties.
 
 ## Component API
 
