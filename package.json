@@ -1,9 +1,9 @@
 {
   "name": "@cyril2day2/pristine-ui",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "type": "module",
-  "description": "A collection of reusable, Apple‑inspired Vue 3 UI components",
+  "description": "A collection of reusable, clean‑design Vue 3 UI components",
   "keywords": [
     "vue",
     "ui",
