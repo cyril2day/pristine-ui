@@ -50,11 +50,11 @@
   ],
   "peerDependencies": {
     "normalize.css": "^8.0.1",
-    "vue": "^3.5.26"
+    "vue": "^3.5.26",
+    "pristine-styles": "^0.1.0"
   },
   "dependencies": {
     "pristine-fp": "^0.1.0",
-    "pristine-styles": "^0.1.0",
     "underscore": "^1.13.7"
   },
   "devDependencies": {
